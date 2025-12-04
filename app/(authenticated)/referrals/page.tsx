@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Download, Trash2, RefreshCcw, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -12,6 +13,7 @@ import { mockReferrals } from '@/lib/mock-data/referrals';
 import type { Referral } from '@/lib/types';
 
 export default function ReferralsPage() {
+  const router = useRouter();
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     statuses: [],
@@ -123,8 +125,7 @@ export default function ReferralsPage() {
   };
 
   const handleView = (id: string) => {
-    // Navigate to referral detail page (Phase 4)
-    console.log('View referral:', id);
+    router.push(`/referrals/${id}`);
   };
 
   const handleCall = (id: string) => {

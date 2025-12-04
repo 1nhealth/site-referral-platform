@@ -9,3 +9,6 @@ export { EmptyState } from './EmptyState';
 export { Dropdown } from './Dropdown';
 export { Checkbox } from './Checkbox';
 export { Avatar, AvatarGroup } from './Avatar';
+export { Textarea } from './Textarea';
+export { ToastProvider, useToast, useToastActions } from './Toast';
+export { Tooltip } from './Tooltip';
