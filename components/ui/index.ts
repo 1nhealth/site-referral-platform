@@ -4,3 +4,8 @@ export { Input } from './Input';
 export { Badge } from './Badge';
 export { ThemeToggle } from './ThemeToggle';
 export { Logo } from './Logo';
+export { Modal } from './Modal';
+export { EmptyState } from './EmptyState';
+export { Dropdown } from './Dropdown';
+export { Checkbox } from './Checkbox';
+export { Avatar, AvatarGroup } from './Avatar';
