@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "1nHealth - Site Referral Platform",
+  title: "1nData - Site Referral Platform",
   description: "Next-generation patient referral management for clinical trial research sites",
   icons: {
     icon: "/favicon.ico",
