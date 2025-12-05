@@ -856,3 +856,117 @@ textarea:focus {
     animation: none !important;
   }
 }
+
+/* ========================================
+   Status Badge Styles
+   ======================================== */
+
+/* Status badge base - New */
+.status-new {
+  background-color: rgba(83, 202, 151, 0.2);
+  color: #42A279;
+}
+.dark .status-new {
+  background-color: rgba(83, 202, 151, 0.2);
+  color: #53CA97;
+}
+
+/* Status badge - Attempt 1 */
+.status-attempt-1 {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+.dark .status-attempt-1 {
+  background-color: rgba(120, 53, 15, 0.4);
+  color: #fbbf24;
+}
+
+/* Status badge - Attempt 2 */
+.status-attempt-2 {
+  background-color: #fde68a;
+  color: #92400e;
+}
+.dark .status-attempt-2 {
+  background-color: rgba(120, 53, 15, 0.5);
+  color: #fbbf24;
+}
+
+/* Status badge - Attempt 3 */
+.status-attempt-3 {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+.dark .status-attempt-3 {
+  background-color: rgba(124, 45, 18, 0.4);
+  color: #fb923c;
+}
+
+/* Status badge - Attempt 4 */
+.status-attempt-4 {
+  background-color: #fed7aa;
+  color: #9a3412;
+}
+.dark .status-attempt-4 {
+  background-color: rgba(124, 45, 18, 0.5);
+  color: #fb923c;
+}
+
+/* Status badge - Attempt 5 */
+.status-attempt-5 {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+.dark .status-attempt-5 {
+  background-color: rgba(127, 29, 29, 0.4);
+  color: #f87171;
+}
+
+/* Status badge - Sent SMS */
+.status-sent-sms {
+  background-color: rgba(121, 145, 198, 0.2);
+  color: #7991C6;
+}
+.dark .status-sent-sms {
+  background-color: rgba(12, 74, 110, 0.4);
+  color: #7dd3fc;
+}
+
+/* Status badge - Appointment Scheduled */
+.status-appointment {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+.dark .status-appointment {
+  background-color: rgba(88, 28, 135, 0.4);
+  color: #c084fc;
+}
+
+/* Status badge - Screen Failed */
+.status-screen-failed {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+.dark .status-screen-failed {
+  background-color: rgba(75, 85, 99, 0.5);
+  color: #9ca3af;
+}
+
+/* Status badge - Not Interested */
+.status-not-interested {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+.dark .status-not-interested {
+  background-color: rgba(75, 85, 99, 0.5);
+  color: #9ca3af;
+}
+
+/* Status badge - Signed ICF */
+.status-signed-icf {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+.dark .status-signed-icf {
+  background-color: rgba(20, 83, 45, 0.4);
+  color: #4ade80;
+}
