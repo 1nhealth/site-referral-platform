@@ -19,6 +19,7 @@ import { DailyDigestModal } from '@/components/dashboard/DailyDigestModal';
 import { StatsCard } from '@/components/dashboard/StatsCard';
 import { AppointmentsTimeline } from '@/components/dashboard/AppointmentsTimeline';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { AIInsights } from '@/components/dashboard/AIInsights';
 import {
   mockReferrals,
   getNewReferralsCount,
@@ -257,8 +258,17 @@ export default function DashboardPage() {
             </motion.div>
           </div>
 
-          {/* Right Column - Activity Feed & Studies */}
+          {/* Right Column - AI Insights, Activity Feed & Studies */}
           <div className="space-y-6">
+            {/* AI Insights */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              <AIInsights />
+            </motion.div>
+
             {/* Recent Activity */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
