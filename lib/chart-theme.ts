@@ -40,15 +40,18 @@ export const chartGradients = {
 };
 
 export const statusColors: Record<string, string> = {
-  new: '#53CA97',           // mint
-  contact_attempted: '#7B9FE0', // vista-blue
-  sms_sent: '#A855F7',      // purple
-  scheduled: '#06B6D4',     // cyan
-  signed: '#10B981',        // green
-  not_qualified: '#6B7280', // gray
-  declined: '#EF4444',      // red
-  no_show: '#F59E0B',       // warning
-  other: '#8B5CF6',         // violet
+  new: '#53CA97',                 // mint
+  attempt_1: '#F59E0B',           // amber
+  attempt_2: '#F59E0B',           // amber
+  attempt_3: '#EA580C',           // orange
+  attempt_4: '#EA580C',           // orange
+  attempt_5: '#EF4444',           // red
+  sent_sms: '#7B9FE0',            // vista-blue
+  appointment_scheduled: '#A855F7', // purple
+  phone_screen_failed: '#6B7280',  // gray
+  not_interested: '#6B7280',       // gray
+  signed_icf: '#10B981',          // green
+  other: '#8B5CF6',               // violet
 };
 
 export const funnelColors = [
