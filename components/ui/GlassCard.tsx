@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { forwardRef, type ReactNode, type HTMLAttributes } from 'react';
 
-type GlassCardVariant = 'default' | 'elevated' | 'inset';
+type GlassCardVariant = 'default' | 'elevated' | 'inset' | 'liquid' | 'frosted';
 
 interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: GlassCardVariant;
@@ -16,6 +16,8 @@ const variantClasses: Record<GlassCardVariant, string> = {
   default: 'glass-card',
   elevated: 'glass-card-elevated',
   inset: 'glass-card-inset',
+  liquid: 'glass-liquid',
+  frosted: 'glass-frosted',
 };
 
 const paddingClasses = {
