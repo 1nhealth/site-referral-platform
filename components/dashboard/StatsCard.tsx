@@ -110,13 +110,17 @@ export function StatsCard({
     ? 'bg-red-500/10'
     : 'bg-bg-tertiary';
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <GlassCard padding="lg" animate={false} className="h-full relative overflow-hidden">
+      <GlassCard padding="lg" animate={false} accentColor={accentColor} className="h-full relative overflow-hidden">
         {/* Subtle gradient accent at bottom */}
         <div className={`absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t ${colors.gradient} pointer-events-none`} />
 
@@ -162,7 +166,7 @@ export function StatsCard({
           </motion.div>
         </div>
 
-        {/* Sparkline placeholder - visual element */}
+        {/* Sparkline with hover animation */}
         <motion.div
           className="relative mt-4 h-8 flex items-end gap-0.5"
           initial={{ opacity: 0 }}
@@ -170,14 +174,21 @@ export function StatsCard({
           transition={{ delay: delay + 0.5 }}
         >
           {[...Array(12)].map((_, i) => {
-            const height = 20 + Math.sin(i * 0.8) * 15 + Math.random() * 10;
+            const baseHeight = 20 + Math.sin(i * 0.8) * 15 + Math.random() * 10;
+            const hoverHeight = Math.min(baseHeight + 15, 95);
             return (
               <motion.div
                 key={i}
-                className={`flex-1 ${colors.sparkline} rounded-sm`}
+                className={`flex-1 ${colors.sparkline} rounded-sm transition-colors duration-200`}
+                style={{
+                  backgroundColor: isHovered ? colors.sparkline.replace('/30', '/50') : undefined
+                }}
                 initial={{ height: 0 }}
-                animate={{ height: `${height}%` }}
-                transition={{ delay: delay + 0.5 + i * 0.03, duration: 0.3 }}
+                animate={{ height: isHovered ? `${hoverHeight}%` : `${baseHeight}%` }}
+                transition={{
+                  delay: isHovered ? i * 0.02 : delay + 0.5 + i * 0.03,
+                  duration: isHovered ? 0.2 : 0.3
+                }}
               />
             );
           })}

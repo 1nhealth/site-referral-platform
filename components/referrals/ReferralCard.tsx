@@ -334,7 +334,8 @@ export function ReferralCard({
       <GlassCard
         padding="lg"
         animate={false}
-        className={`relative h-full hover:bg-bg-tertiary/50 transition-colors ${isSelected ? 'ring-2 ring-mint' : ''}`}
+        accentColor="mint"
+        className={`relative h-full transition-colors ${isSelected ? 'ring-2 ring-mint' : ''}`}
       >
         {cardContent}
       </GlassCard>

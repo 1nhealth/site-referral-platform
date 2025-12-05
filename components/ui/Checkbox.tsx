@@ -32,14 +32,15 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             className={`
               w-5 h-5 rounded-md border-2 cursor-pointer
               flex items-center justify-center
-              transition-colors duration-200
+              transition-all duration-200
               ${checked || indeterminate
-                ? 'bg-mint border-mint'
+                ? 'bg-mint border-mint shadow-[0_0_8px_rgba(83,202,151,0.4)]'
                 : 'checkbox-unchecked'
               }
               ${error ? 'border-error' : ''}
-              ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-mint/70'}
+              ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-mint/70 hover:shadow-[0_0_12px_rgba(83,202,151,0.3)]'}
             `}
+            whileHover={!disabled ? { scale: 1.1 } : undefined}
             whileTap={!disabled ? { scale: 0.9 } : undefined}
             onClick={() => {
               if (!disabled) {

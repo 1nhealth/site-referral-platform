@@ -181,6 +181,20 @@ textarea,
     0 4px 24px rgba(0, 0, 0, 0.06),
     0 1px 3px rgba(0, 0, 0, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 200ms ease-out;
+}
+
+.glass-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.65) 100%
+  );
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.95);
 }
 
 .glass-card-elevated {
@@ -197,6 +211,20 @@ textarea,
     0 8px 32px rgba(0, 0, 0, 0.08),
     0 2px 8px rgba(0, 0, 0, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 200ms ease-out;
+}
+
+.glass-card-elevated:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.75) 100%
+  );
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.98);
 }
 
 .dark .glass-card {
@@ -205,10 +233,28 @@ textarea,
   box-shadow: var(--shadow-glass), var(--glass-inner-glow);
 }
 
+.dark .glass-card:hover {
+  background: rgba(35, 40, 50, 0.8);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
 .dark .glass-card-elevated {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-lg), var(--glass-outer-glow), var(--glass-inner-glow);
+}
+
+.dark .glass-card-elevated:hover {
+  background: rgba(40, 45, 55, 0.85);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .glass-card-inset {
@@ -455,12 +501,15 @@ textarea,
 .glass-list-item {
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.6);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
-  transition: background-color 150ms ease, border-color 150ms ease;
+  transition: all 150ms ease;
 }
 
 .glass-list-item:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.75);
+  border-left-color: var(--mint);
+  box-shadow: 0 4px 16px rgba(83, 202, 151, 0.15);
 }
 
 .dark .glass-list-item {
@@ -470,6 +519,7 @@ textarea,
     rgba(35, 40, 50, 0.5) 100%
   );
   border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid transparent;
 }
 
 .dark .glass-list-item:hover {
@@ -479,6 +529,8 @@ textarea,
     rgba(45, 50, 60, 0.6) 100%
   );
   border-color: rgba(255, 255, 255, 0.12);
+  border-left-color: var(--mint);
+  box-shadow: 0 4px 16px rgba(83, 202, 151, 0.2);
 }
 
 /* ========================================
@@ -622,20 +674,114 @@ textarea,
 }
 
 .hover-glow-mint {
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .hover-glow-mint:hover {
   box-shadow:
     0 0 20px rgba(83, 202, 151, 0.4),
-    0 0 40px rgba(83, 202, 151, 0.2),
-    0 4px 16px rgba(0, 0, 0, 0.15);
+    0 0 40px rgba(83, 202, 151, 0.2);
 }
 
-.hover-glow-mint:active {
+.hover-glow-blue {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow-blue:hover {
   box-shadow:
-    0 0 15px rgba(83, 202, 151, 0.3),
-    0 2px 8px rgba(0, 0, 0, 0.1);
+    0 0 20px rgba(121, 145, 198, 0.4),
+    0 0 40px rgba(121, 145, 198, 0.2);
+}
+
+.hover-glow-purple {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow-purple:hover {
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.4),
+    0 0 40px rgba(168, 85, 247, 0.2);
+}
+
+.hover-glow-amber {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow-amber:hover {
+  box-shadow:
+    0 0 20px rgba(245, 158, 11, 0.4),
+    0 0 40px rgba(245, 158, 11, 0.2);
+}
+
+.hover-glow-error {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow-error:hover {
+  box-shadow:
+    0 0 20px rgba(239, 68, 68, 0.4),
+    0 0 40px rgba(239, 68, 68, 0.2);
+}
+
+/* ========================================
+   Shimmer Border Animation
+   ======================================== */
+
+.glass-card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(83, 202, 151, 0.6) 25%,
+    rgba(121, 145, 198, 0.6) 50%,
+    rgba(83, 202, 151, 0.6) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.glass-card-shimmer:hover::before {
+  opacity: 1;
+  animation: shimmer-slide 2s linear infinite;
+}
+
+@keyframes shimmer-slide {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Dark mode shimmer adjustment */
+.dark .glass-card-shimmer::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(83, 202, 151, 0.4) 25%,
+    rgba(121, 145, 198, 0.4) 50%,
+    rgba(83, 202, 151, 0.4) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
 }
 
 /* ========================================
