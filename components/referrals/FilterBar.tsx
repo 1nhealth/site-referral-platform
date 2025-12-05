@@ -10,8 +10,8 @@ import {
   List,
   SlidersHorizontal,
   RotateCcw,
+  ChevronDown,
 } from 'lucide-react';
-import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Dropdown, type DropdownOption } from '@/components/ui/Dropdown';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -37,13 +37,6 @@ interface FilterBarProps {
   filteredCount: number;
 }
 
-const statusOptions: DropdownOption[] = (
-  Object.keys(statusConfigs) as ReferralStatus[]
-).map((status) => ({
-  value: status,
-  label: statusConfigs[status].label,
-}));
-
 const studyOptions: DropdownOption[] = mockStudies.map((study) => ({
   value: study.id,
   label: study.name,
@@ -65,6 +58,13 @@ const sortOptions: DropdownOption[] = [
   { value: 'last_contacted', label: 'Last Contacted' },
 ];
 
+// Group statuses for better organization
+const statusGroups = {
+  active: ['new', 'attempt_1', 'attempt_2', 'attempt_3', 'attempt_4', 'attempt_5', 'sent_sms'] as ReferralStatus[],
+  scheduled: ['appointment_scheduled'] as ReferralStatus[],
+  completed: ['signed_icf', 'phone_screen_failed', 'not_interested'] as ReferralStatus[],
+};
+
 export function FilterBar({
   filters,
   onFiltersChange,
@@ -74,18 +74,13 @@ export function FilterBar({
   filteredCount,
 }: FilterBarProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showStatusPicker, setShowStatusPicker] = useState(false);
 
   const hasActiveFilters =
     filters.search ||
     filters.statuses.length > 0 ||
     filters.studyIds.length > 0 ||
     filters.assignedTo.length > 0;
-
-  const activeFilterCount =
-    (filters.search ? 1 : 0) +
-    filters.statuses.length +
-    filters.studyIds.length +
-    filters.assignedTo.length;
 
   const handleReset = () => {
     onFiltersChange({
@@ -97,12 +92,26 @@ export function FilterBar({
     });
   };
 
+  const toggleStatus = (status: ReferralStatus) => {
+    const newStatuses = filters.statuses.includes(status)
+      ? filters.statuses.filter((s) => s !== status)
+      : [...filters.statuses, status];
+    onFiltersChange({ ...filters, statuses: newStatuses });
+  };
+
+  const removeStatus = (status: ReferralStatus) => {
+    onFiltersChange({
+      ...filters,
+      statuses: filters.statuses.filter((s) => s !== status),
+    });
+  };
+
   return (
     <div className="space-y-4">
       {/* Main Filter Row */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 flex-wrap">
         {/* Search */}
-        <div className="flex-1 max-w-md relative">
+        <div className="flex-1 min-w-[280px] max-w-md relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
           <input
             type="text"
@@ -132,22 +141,148 @@ export function FilterBar({
           )}
         </div>
 
-        {/* Quick Status Filter */}
-        <div className="w-48">
-          <Dropdown
-            options={statusOptions}
-            value={filters.statuses}
-            onChange={(value) =>
-              onFiltersChange({ ...filters, statuses: value as ReferralStatus[] })
-            }
-            placeholder="Status"
-            multiple
-            searchable
-          />
+        {/* Status Filter Button with Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setShowStatusPicker(!showStatusPicker)}
+            className={`
+              flex items-center gap-2 px-4 py-2.5
+              bg-bg-secondary/50 dark:bg-bg-tertiary/50
+              border border-glass-border
+              rounded-xl
+              text-text-primary
+              transition-all duration-200
+              hover:border-mint/50
+              ${showStatusPicker ? 'ring-2 ring-mint/50 border-mint' : ''}
+              ${filters.statuses.length > 0 ? 'border-mint/30' : ''}
+            `}
+          >
+            <Filter className="w-4 h-4 text-text-muted" />
+            <span>Status</span>
+            {filters.statuses.length > 0 && (
+              <span className="px-1.5 py-0.5 bg-mint/20 text-mint text-xs font-medium rounded-md">
+                {filters.statuses.length}
+              </span>
+            )}
+            <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${showStatusPicker ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Status Picker Dropdown */}
+          <AnimatePresence>
+            {showStatusPicker && (
+              <>
+                {/* Backdrop to close on click outside */}
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setShowStatusPicker(false)}
+                />
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-full left-0 mt-2 z-50 w-80 p-4 glass-card shadow-xl"
+                >
+                  <div className="space-y-4">
+                    {/* Active Statuses */}
+                    <div>
+                      <p className="text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Active</p>
+                      <div className="flex flex-wrap gap-2">
+                        {statusGroups.active.map((status) => {
+                          const config = statusConfigs[status];
+                          const isSelected = filters.statuses.includes(status);
+                          return (
+                            <button
+                              key={status}
+                              onClick={() => toggleStatus(status)}
+                              className={`
+                                px-3 py-1.5 rounded-lg text-xs font-medium
+                                transition-all duration-150
+                                ${isSelected
+                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-bg-primary ring-current`
+                                  : `${config.bgClass} ${config.textClass} opacity-40 hover:opacity-100`
+                                }
+                              `}
+                            >
+                              {config.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Scheduled */}
+                    <div>
+                      <p className="text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Scheduled</p>
+                      <div className="flex flex-wrap gap-2">
+                        {statusGroups.scheduled.map((status) => {
+                          const config = statusConfigs[status];
+                          const isSelected = filters.statuses.includes(status);
+                          return (
+                            <button
+                              key={status}
+                              onClick={() => toggleStatus(status)}
+                              className={`
+                                px-3 py-1.5 rounded-lg text-xs font-medium
+                                transition-all duration-150
+                                ${isSelected
+                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-bg-primary ring-current`
+                                  : `${config.bgClass} ${config.textClass} opacity-40 hover:opacity-100`
+                                }
+                              `}
+                            >
+                              {config.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Completed/Closed */}
+                    <div>
+                      <p className="text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Completed</p>
+                      <div className="flex flex-wrap gap-2">
+                        {statusGroups.completed.map((status) => {
+                          const config = statusConfigs[status];
+                          const isSelected = filters.statuses.includes(status);
+                          return (
+                            <button
+                              key={status}
+                              onClick={() => toggleStatus(status)}
+                              className={`
+                                px-3 py-1.5 rounded-lg text-xs font-medium
+                                transition-all duration-150
+                                ${isSelected
+                                  ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-bg-primary ring-current`
+                                  : `${config.bgClass} ${config.textClass} opacity-40 hover:opacity-100`
+                                }
+                              `}
+                            >
+                              {config.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Clear All */}
+                    {filters.statuses.length > 0 && (
+                      <button
+                        onClick={() => onFiltersChange({ ...filters, statuses: [] })}
+                        className="text-xs text-text-muted hover:text-text-primary transition-colors"
+                      >
+                        Clear all status filters
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Study Filter */}
-        <div className="w-48">
+        <div className="w-44">
           <Dropdown
             options={studyOptions}
             value={filters.studyIds}
@@ -167,16 +302,19 @@ export function FilterBar({
           onClick={() => setShowAdvanced(!showAdvanced)}
           className="relative"
         >
-          Filters
-          {activeFilterCount > 0 && (
+          More
+          {filters.assignedTo.length > 0 && (
             <span className="absolute -top-1 -right-1 w-5 h-5 bg-mint text-white text-xs rounded-full flex items-center justify-center">
-              {activeFilterCount}
+              {filters.assignedTo.length}
             </span>
           )}
         </Button>
 
+        {/* Spacer */}
+        <div className="flex-1" />
+
         {/* Sort */}
-        <div className="w-44">
+        <div className="w-40">
           <Dropdown
             options={sortOptions}
             value={filters.sortBy}
@@ -210,6 +348,44 @@ export function FilterBar({
           </button>
         </div>
       </div>
+
+      {/* Quick Status Pills - Show selected statuses with proper colors */}
+      {filters.statuses.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          className="flex items-center gap-2 flex-wrap"
+        >
+          <span className="text-xs text-text-muted">Filtering by:</span>
+          {filters.statuses.map((status) => {
+            const config = statusConfigs[status];
+            return (
+              <motion.span
+                key={status}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${config.bgClass} ${config.textClass}`}
+              >
+                {config.label}
+                <button
+                  onClick={() => removeStatus(status)}
+                  className="hover:bg-black/10 dark:hover:bg-white/10 rounded-full p-0.5 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </motion.span>
+            );
+          })}
+          <button
+            onClick={() => onFiltersChange({ ...filters, statuses: [] })}
+            className="text-xs text-text-muted hover:text-text-primary transition-colors ml-2"
+          >
+            Clear all
+          </button>
+        </motion.div>
+      )}
 
       {/* Advanced Filters Panel */}
       <AnimatePresence>
@@ -245,7 +421,7 @@ export function FilterBar({
                     leftIcon={<RotateCcw className="w-4 h-4" />}
                     onClick={handleReset}
                   >
-                    Reset Filters
+                    Reset All Filters
                   </Button>
                 )}
               </div>
@@ -264,37 +440,17 @@ export function FilterBar({
           referrals
         </span>
 
-        {/* Active Filters Tags */}
-        {hasActiveFilters && (
+        {/* Study Filter Tags */}
+        {filters.studyIds.length > 0 && (
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            <span>Active filters:</span>
+            <span className="text-text-muted">Studies:</span>
             <div className="flex gap-1.5">
-              {filters.statuses.map((status) => (
-                <span
-                  key={status}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-mint/20 text-mint rounded-lg text-xs"
-                >
-                  {statusConfigs[status].label}
-                  <button
-                    onClick={() =>
-                      onFiltersChange({
-                        ...filters,
-                        statuses: filters.statuses.filter((s) => s !== status),
-                      })
-                    }
-                    className="hover:bg-mint/30 rounded-full"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
               {filters.studyIds.map((studyId) => {
                 const study = mockStudies.find((s) => s.id === studyId);
                 return study ? (
                   <span
                     key={studyId}
-                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 text-purple-500 rounded-lg text-xs"
+                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-lg text-xs"
                   >
                     {study.name}
                     <button
