@@ -7,7 +7,6 @@ import {
   Shuffle,
   Filter,
   ChevronDown,
-  ChevronUp,
   GripVertical,
   X,
   Play,
@@ -35,10 +34,12 @@ const workableStatuses: ReferralStatus[] = [
   'sent_sms',
 ];
 
-const statusOptions = workableStatuses.map((status) => ({
-  value: status,
-  label: statusConfigs[status].label,
-}));
+// Group workable statuses for better organization
+const statusGroups = {
+  new: ['new'] as ReferralStatus[],
+  attempts: ['attempt_1', 'attempt_2', 'attempt_3', 'attempt_4', 'attempt_5'] as ReferralStatus[],
+  other: ['sent_sms'] as ReferralStatus[],
+};
 
 const studyOptions = mockStudies.map((study) => ({
   value: study.id,
@@ -51,6 +52,19 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
   const [maxLeads, setMaxLeads] = useState(15);
   const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
   const [showFilters, setShowFilters] = useState(false);
+  const [showStatusPicker, setShowStatusPicker] = useState(false);
+
+  const toggleStatus = (status: ReferralStatus) => {
+    setSelectedStatuses((prev) =>
+      prev.includes(status)
+        ? prev.filter((s) => s !== status)
+        : [...prev, status]
+    );
+  };
+
+  const removeStatus = (status: ReferralStatus) => {
+    setSelectedStatuses((prev) => prev.filter((s) => s !== status));
+  };
 
   // Filter available leads
   const availableLeads = useMemo(() => {
@@ -147,7 +161,7 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
             onClick={() => setShowFilters(!showFilters)}
             className="text-text-secondary hover:text-text-primary transition-colors"
           >
-            {showFilters ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            <ChevronDown className={`w-5 h-5 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
           </button>
         </div>
 
@@ -159,25 +173,163 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
               exit={{ height: 0, opacity: 0 }}
               className="space-y-4"
             >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Dropdown
-                  label="Status"
-                  options={statusOptions}
-                  value={selectedStatuses}
-                  onChange={(v) => setSelectedStatuses(v as ReferralStatus[])}
-                  multiple
-                  placeholder="All workable"
-                />
+              <div className="flex flex-wrap items-end gap-4">
+                {/* Status Filter Button with Dropdown */}
+                <div className="relative">
+                  <label className="block text-sm font-medium text-text-primary mb-1.5">
+                    Status
+                  </label>
+                  <button
+                    onClick={() => setShowStatusPicker(!showStatusPicker)}
+                    className={`
+                      flex items-center gap-2 px-4 py-2.5
+                      bg-bg-secondary/50 dark:bg-bg-tertiary/50
+                      border border-glass-border
+                      rounded-xl
+                      text-text-primary
+                      transition-all duration-200
+                      hover:border-mint/50
+                      ${showStatusPicker ? 'ring-2 ring-mint/50 border-mint' : ''}
+                      ${selectedStatuses.length > 0 ? 'border-mint/30' : ''}
+                    `}
+                  >
+                    <Filter className="w-4 h-4 text-text-muted" />
+                    <span>Status</span>
+                    {selectedStatuses.length > 0 && (
+                      <span className="px-1.5 py-0.5 bg-mint/20 text-mint text-xs font-medium rounded-md">
+                        {selectedStatuses.length}
+                      </span>
+                    )}
+                    <ChevronDown className={`w-4 h-4 text-text-muted transition-transform ${showStatusPicker ? 'rotate-180' : ''}`} />
+                  </button>
 
-                <Dropdown
-                  label="Study"
-                  options={studyOptions}
-                  value={selectedStudies}
-                  onChange={(v) => setSelectedStudies(v as string[])}
-                  multiple
-                  placeholder="All studies"
-                />
+                  {/* Status Picker Dropdown */}
+                  <AnimatePresence>
+                    {showStatusPicker && (
+                      <>
+                        {/* Backdrop to close on click outside */}
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => setShowStatusPicker(false)}
+                        />
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute top-full left-0 mt-2 z-50 w-80 p-4 glass-dropdown"
+                        >
+                          <div className="space-y-4">
+                            {/* New Status */}
+                            <div>
+                              <p className="text-xs font-medium text-text-muted uppercase tracking-wider mb-2">New Leads</p>
+                              <div className="flex flex-wrap gap-2">
+                                {statusGroups.new.map((status) => {
+                                  const config = statusConfigs[status];
+                                  const isSelected = selectedStatuses.includes(status);
+                                  return (
+                                    <button
+                                      key={status}
+                                      onClick={() => toggleStatus(status)}
+                                      className={`
+                                        px-3 py-1.5 rounded-lg text-xs font-medium
+                                        transition-all duration-150
+                                        ${isSelected
+                                          ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-white dark:ring-offset-gray-800 ring-current`
+                                          : `${config.bgClass} ${config.textClass} opacity-70 hover:opacity-100`
+                                        }
+                                      `}
+                                    >
+                                      {config.label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
 
+                            {/* Attempt Statuses */}
+                            <div>
+                              <p className="text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Attempt History</p>
+                              <div className="flex flex-wrap gap-2">
+                                {statusGroups.attempts.map((status) => {
+                                  const config = statusConfigs[status];
+                                  const isSelected = selectedStatuses.includes(status);
+                                  return (
+                                    <button
+                                      key={status}
+                                      onClick={() => toggleStatus(status)}
+                                      className={`
+                                        px-3 py-1.5 rounded-lg text-xs font-medium
+                                        transition-all duration-150
+                                        ${isSelected
+                                          ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-white dark:ring-offset-gray-800 ring-current`
+                                          : `${config.bgClass} ${config.textClass} opacity-70 hover:opacity-100`
+                                        }
+                                      `}
+                                    >
+                                      {config.label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Other Statuses */}
+                            <div>
+                              <p className="text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Other</p>
+                              <div className="flex flex-wrap gap-2">
+                                {statusGroups.other.map((status) => {
+                                  const config = statusConfigs[status];
+                                  const isSelected = selectedStatuses.includes(status);
+                                  return (
+                                    <button
+                                      key={status}
+                                      onClick={() => toggleStatus(status)}
+                                      className={`
+                                        px-3 py-1.5 rounded-lg text-xs font-medium
+                                        transition-all duration-150
+                                        ${isSelected
+                                          ? `${config.bgClass} ${config.textClass} ring-2 ring-offset-1 ring-offset-white dark:ring-offset-gray-800 ring-current`
+                                          : `${config.bgClass} ${config.textClass} opacity-70 hover:opacity-100`
+                                        }
+                                      `}
+                                    >
+                                      {config.label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            {/* Clear All */}
+                            {selectedStatuses.length > 0 && (
+                              <button
+                                onClick={() => setSelectedStatuses([])}
+                                className="text-xs text-text-muted hover:text-text-primary transition-colors"
+                              >
+                                Clear all status filters
+                              </button>
+                            )}
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Study Filter */}
+                <div className="w-44">
+                  <Dropdown
+                    label="Study"
+                    options={studyOptions}
+                    value={selectedStudies}
+                    onChange={(v) => setSelectedStudies(v as string[])}
+                    multiple
+                    placeholder="All studies"
+                  />
+                </div>
+
+                {/* Max Leads */}
                 <div>
                   <label className="block text-sm font-medium text-text-primary mb-1.5">
                     Max Leads
@@ -188,10 +340,48 @@ export function LeadSelector({ onStartSession }: LeadSelectorProps) {
                     max={50}
                     value={maxLeads}
                     onChange={(e) => setMaxLeads(Math.min(50, Math.max(1, parseInt(e.target.value) || 15)))}
-                    className="w-full px-4 py-2.5 bg-bg-secondary/50 dark:bg-bg-tertiary/50 border border-glass-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
+                    className="w-24 px-4 py-2.5 bg-bg-secondary/50 dark:bg-bg-tertiary/50 border border-glass-border rounded-xl text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50"
                   />
                 </div>
               </div>
+
+              {/* Selected Status Pills */}
+              {selectedStatuses.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="flex items-center gap-2 flex-wrap pt-2"
+                >
+                  <span className="text-xs text-text-muted">Filtering by:</span>
+                  {selectedStatuses.map((status) => {
+                    const config = statusConfigs[status];
+                    return (
+                      <motion.span
+                        key={status}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium ${config.bgClass} ${config.textClass}`}
+                      >
+                        {config.label}
+                        <button
+                          onClick={() => removeStatus(status)}
+                          className="hover:bg-black/10 dark:hover:bg-white/10 rounded-full p-0.5 transition-colors"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </motion.span>
+                    );
+                  })}
+                  <button
+                    onClick={() => setSelectedStatuses([])}
+                    className="text-xs text-text-muted hover:text-text-primary transition-colors ml-2"
+                  >
+                    Clear all
+                  </button>
+                </motion.div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

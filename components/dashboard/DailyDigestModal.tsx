@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/lib/context/AuthContext';
 import { getNewReferralsCount, getOverdueReferrals, getConversionRate } from '@/lib/mock-data/referrals';
 import { getTodaysAppointments } from '@/lib/mock-data/appointments';
 
@@ -40,7 +39,6 @@ function formatDate(): string {
 }
 
 export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
-  const { user } = useAuth();
   const [dontShowToday, setDontShowToday] = useState(false);
 
   const newReferrals = getNewReferralsCount();
@@ -119,7 +117,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
             >
-              {getGreeting()}, {user?.firstName}!
+              {getGreeting()}!
             </motion.h2>
             <motion.p
               className="text-text-secondary mt-1"
