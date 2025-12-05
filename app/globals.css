@@ -415,6 +415,29 @@ textarea:focus {
 }
 
 /* ========================================
+   Checkbox Styles
+   ======================================== */
+
+.checkbox-unchecked {
+  background-color: transparent;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.dark .checkbox-unchecked {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border);
+}
+
+/* Divider line for cards */
+.card-divider {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark .card-divider {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ========================================
    Reduced Motion Support (Accessibility)
    ======================================== */
 

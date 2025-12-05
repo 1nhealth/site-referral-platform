@@ -35,7 +35,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               transition-colors duration-200
               ${checked || indeterminate
                 ? 'bg-mint border-mint'
-                : 'bg-white dark:bg-bg-tertiary/50 border-gray-300 dark:border-glass-border'
+                : 'checkbox-unchecked'
               }
               ${error ? 'border-error' : ''}
               ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-mint/70'}

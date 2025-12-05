@@ -83,7 +83,6 @@ export function Avatar({
           overflow-hidden
           ${!showImage ? colorClass : ''}
           font-semibold
-          ring-2 ring-bg-primary
         `}
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.2 }}
@@ -107,7 +106,6 @@ export function Avatar({
             ${sizeConfig.status}
             ${statusColors[status]}
             rounded-full
-            ring-2 ring-bg-primary
           `}
         />
       )}
@@ -157,7 +155,6 @@ export function AvatarGroup({
             bg-bg-tertiary text-text-secondary
             ${sizeConfig.text}
             font-medium
-            ring-2 ring-bg-primary
           `}
         >
           +{remaining}
