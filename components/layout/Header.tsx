@@ -18,50 +18,52 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
   const { isPro, setShowUpgradeModal } = useProTier();
 
   return (
-    <header className="h-16 bg-bg-secondary/80 backdrop-blur-md border-b border-glass-border px-6 flex items-center justify-between sticky top-0 z-40">
-      {/* Left: Page Title */}
-      <h1 className="text-xl font-semibold text-text-primary">{title}</h1>
+    <header className="sticky top-3 z-40 mx-3 mb-3">
+      <div className="floating-header h-14 px-5 flex items-center justify-between">
+        {/* Left: Page Title */}
+        <h1 className="text-lg font-semibold text-text-primary">{title}</h1>
 
-      {/* Right: Actions */}
-      <div className="flex items-center gap-3">
-        {/* Pro Badge or Upgrade Button */}
-        {isPro ? (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-mint/20 to-vista-blue/20 border border-mint/30"
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2">
+          {/* Pro Badge or Upgrade Button */}
+          {isPro ? (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-mint/10 border border-mint/20"
+            >
+              <Crown className="w-4 h-4 text-mint" />
+              <span className="text-sm font-semibold text-mint">PRO</span>
+            </motion.div>
+          ) : (
+            <motion.button
+              onClick={() => setShowUpgradeModal(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/25 hover:from-amber-500/25 hover:to-yellow-500/25 transition-colors"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span className="text-sm font-medium text-amber-600 dark:text-amber-400">Upgrade</span>
+            </motion.button>
+          )}
+
+          {/* Global Search */}
+          <GlobalSearch />
+
+          {/* Notifications */}
+          <NotificationsPanel />
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
+          {/* User Avatar */}
+          <button
+            className="w-9 h-9 rounded-xl bg-mint/15 flex items-center justify-center text-mint font-semibold text-sm hover:bg-mint/25 transition-colors"
+            aria-label="User menu"
           >
-            <Crown className="w-4 h-4 text-mint" />
-            <span className="text-sm font-semibold text-mint">PRO</span>
-          </motion.div>
-        ) : (
-          <motion.button
-            onClick={() => setShowUpgradeModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30 hover:from-amber-500/30 hover:to-yellow-500/30 transition-colors"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="text-sm font-medium text-amber-400">Upgrade to Pro</span>
-          </motion.button>
-        )}
-
-        {/* Global Search */}
-        <GlobalSearch />
-
-        {/* Notifications */}
-        <NotificationsPanel />
-
-        {/* Theme Toggle */}
-        <ThemeToggle />
-
-        {/* User Avatar */}
-        <button
-          className="w-9 h-9 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold text-sm hover:bg-mint/30 transition-colors"
-          aria-label="User menu"
-        >
-          {user ? getUserInitials(user) : 'U'}
-        </button>
+            {user ? getUserInitials(user) : 'U'}
+          </button>
+        </div>
       </div>
     </header>
   );
