@@ -448,6 +448,39 @@ textarea,
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+/* ========================================
+   Glass List Item Styles
+   ======================================== */
+
+.glass-list-item {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.glass-list-item:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dark .glass-list-item {
+  background: linear-gradient(
+    135deg,
+    rgba(40, 45, 55, 0.6) 0%,
+    rgba(35, 40, 50, 0.5) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .glass-list-item:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(50, 55, 65, 0.7) 0%,
+    rgba(45, 50, 60, 0.6) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 /* Legacy app-background class - keep for compatibility */
 .app-background {
   background:

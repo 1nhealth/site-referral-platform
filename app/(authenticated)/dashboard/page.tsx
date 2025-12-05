@@ -197,7 +197,7 @@ export default function DashboardPage() {
                       .map((referral) => (
                         <div
                           key={referral.id}
-                          className="flex items-center justify-between p-3 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 transition-colors cursor-pointer border border-white/60 dark:border-white/10"
+                          className="flex items-center justify-between p-3 cursor-pointer glass-list-item"
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-mint/20 flex items-center justify-center text-mint font-semibold">
@@ -225,7 +225,7 @@ export default function DashboardPage() {
                     {overdueReferrals.slice(0, 2).map((referral) => (
                       <div
                         key={referral.id}
-                        className="flex items-center justify-between p-3 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 transition-colors cursor-pointer border border-white/60 dark:border-white/10"
+                        className="flex items-center justify-between p-3 cursor-pointer glass-list-item"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-warning/20 flex items-center justify-center text-warning font-semibold">
