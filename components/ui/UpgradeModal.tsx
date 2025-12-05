@@ -56,7 +56,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-0 right-0 p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+          className="absolute top-0 right-0 p-2 rounded-xl text-text-secondary hover:text-text-primary glass-modal-card transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -87,7 +87,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 + index * 0.05 }}
-              className="flex items-start gap-3 p-3 rounded-xl bg-bg-tertiary/50"
+              className="flex items-start gap-3 p-3 glass-modal-card"
             >
               <div className="p-2 rounded-lg bg-mint/10">
                 <feature.icon className="w-5 h-5 text-mint" />

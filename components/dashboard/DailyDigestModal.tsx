@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { GlassCard } from '@/components/ui/GlassCard';
 import { useAuth } from '@/lib/context/AuthContext';
 import { getNewReferralsCount, getOverdueReferrals, getConversionRate } from '@/lib/mock-data/referrals';
 import { getTodaysAppointments } from '@/lib/mock-data/appointments';
@@ -133,7 +132,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
           </div>
           <motion.button
             onClick={handleClose}
-            className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-tertiary transition-colors"
+            className="p-2 rounded-xl text-text-secondary hover:text-text-primary glass-modal-card transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -150,7 +149,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + index * 0.05 }}
             >
-              <GlassCard variant="inset" padding="md" animate={false}>
+              <div className="glass-modal-card p-4">
                 <div className="flex items-start gap-3">
                   <div className={`p-2 rounded-xl ${metric.bgColor}`}>
                     <metric.icon className={`w-5 h-5 ${metric.color}`} />
@@ -165,7 +164,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
                     </p>
                   </div>
                 </div>
-              </GlassCard>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -177,7 +176,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <GlassCard variant="inset" padding="md" animate={false}>
+            <div className="glass-modal-card p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-xl bg-purple-500/10">
@@ -199,7 +198,7 @@ export function DailyDigestModal({ isOpen, onClose }: DailyDigestModalProps) {
                 </div>
                 <ChevronRight className="w-5 h-5 text-text-muted" />
               </div>
-            </GlassCard>
+            </div>
           </motion.div>
         )}
 

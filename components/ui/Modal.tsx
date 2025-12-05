@@ -72,7 +72,7 @@ export function Modal({
           <motion.div
             className={`
               relative w-full ${sizeClasses[size]}
-              glass-card-elevated p-0 overflow-hidden
+              glass-modal p-0 overflow-hidden
             `}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
