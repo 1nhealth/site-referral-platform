@@ -1,7 +1,10 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import { Sparkles, Crown } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui';
 import { useAuth } from '@/lib/context/AuthContext';
+import { useProTier } from '@/lib/context/ProTierContext';
 import { getUserInitials } from '@/lib/mock-data/users';
 import { GlobalSearch } from './GlobalSearch';
 import { NotificationsPanel } from './NotificationsPanel';
@@ -12,6 +15,7 @@ interface HeaderProps {
 
 export function Header({ title = 'Dashboard' }: HeaderProps) {
   const { user } = useAuth();
+  const { isPro, setShowUpgradeModal } = useProTier();
 
   return (
     <header className="h-16 bg-bg-secondary/80 backdrop-blur-md border-b border-glass-border px-6 flex items-center justify-between sticky top-0 z-40">
@@ -20,6 +24,28 @@ export function Header({ title = 'Dashboard' }: HeaderProps) {
 
       {/* Right: Actions */}
       <div className="flex items-center gap-3">
+        {/* Pro Badge or Upgrade Button */}
+        {isPro ? (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-mint/20 to-vista-blue/20 border border-mint/30"
+          >
+            <Crown className="w-4 h-4 text-mint" />
+            <span className="text-sm font-semibold text-mint">PRO</span>
+          </motion.div>
+        ) : (
+          <motion.button
+            onClick={() => setShowUpgradeModal(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-500/20 to-vista-blue/20 border border-purple-500/30 hover:from-purple-500/30 hover:to-vista-blue/30 transition-colors"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            <span className="text-sm font-medium text-purple-400">Upgrade to Pro</span>
+          </motion.button>
+        )}
+
         {/* Global Search */}
         <GlobalSearch />
 

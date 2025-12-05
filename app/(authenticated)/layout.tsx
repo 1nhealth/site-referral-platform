@@ -4,12 +4,15 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeProvider } from '@/lib/context/ThemeContext';
 import { AuthProvider, useAuth } from '@/lib/context/AuthContext';
-import { ProTierProvider } from '@/lib/context/ProTierContext';
+import { ProTierProvider, useProTier } from '@/lib/context/ProTierContext';
 import { ToastProvider } from '@/components/ui/Toast';
 import { Sidebar, Header } from '@/components/layout';
+import { UpgradeModal } from '@/components/ui/UpgradeModal';
+import { Confetti } from '@/components/ui/Confetti';
 
 function AuthenticatedLayoutContent({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, user } = useAuth();
+  const { showUpgradeModal, setShowUpgradeModal, showConfetti } = useProTier();
   const router = useRouter();
 
   useEffect(() => {
@@ -22,22 +25,33 @@ function AuthenticatedLayoutContent({ children }: { children: React.ReactNode })
   }, [isAuthenticated, user, router]);
 
   return (
-    <div className="flex h-screen bg-bg-primary overflow-hidden">
-      {/* Sidebar */}
-      <div className="relative flex-shrink-0">
-        <Sidebar />
-      </div>
+    <>
+      {/* Confetti celebration on Pro upgrade */}
+      <Confetti isActive={showConfetti} />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <Header />
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+      />
+
+      <div className="flex h-screen bg-bg-primary overflow-hidden">
+        {/* Sidebar */}
+        <div className="relative flex-shrink-0">
+          <Sidebar />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <Header />
+          <main className="flex-1 overflow-y-auto p-6">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

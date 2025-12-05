@@ -16,3 +16,5 @@ export { ProgressBar } from './ProgressBar';
 export { LottieContainer } from './LottieContainer';
 export { AnimatedHeroSVG } from './AnimatedHeroSVG';
 export { ProFeatureGate } from './ProFeatureGate';
+export { UpgradeModal } from './UpgradeModal';
+export { Confetti } from './Confetti';
