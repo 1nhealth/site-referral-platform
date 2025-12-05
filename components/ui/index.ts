@@ -13,3 +13,5 @@ export { Textarea } from './Textarea';
 export { ToastProvider, useToast, useToastActions } from './Toast';
 export { Tooltip } from './Tooltip';
 export { ProgressBar } from './ProgressBar';
+export { LottieContainer } from './LottieContainer';
+export { AnimatedHeroSVG } from './AnimatedHeroSVG';
