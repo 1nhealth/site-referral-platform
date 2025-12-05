@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 
+type AccentColor = 'mint' | 'blue' | 'purple' | 'amber';
+
 interface StatsCardProps {
   title: string;
   value: number;
@@ -16,8 +18,32 @@ interface StatsCardProps {
   };
   icon: React.ReactNode;
   iconBgColor?: string;
+  accentColor?: AccentColor;
   delay?: number;
 }
+
+const accentColors: Record<AccentColor, { icon: string; sparkline: string; gradient: string }> = {
+  mint: {
+    icon: 'bg-gradient-to-br from-mint/20 to-emerald-500/10',
+    sparkline: 'bg-mint/30',
+    gradient: 'from-mint/5 to-transparent',
+  },
+  blue: {
+    icon: 'bg-gradient-to-br from-vista-blue/20 to-blue-500/10',
+    sparkline: 'bg-vista-blue/30',
+    gradient: 'from-vista-blue/5 to-transparent',
+  },
+  purple: {
+    icon: 'bg-gradient-to-br from-purple-500/20 to-indigo-500/10',
+    sparkline: 'bg-purple-500/30',
+    gradient: 'from-purple-500/5 to-transparent',
+  },
+  amber: {
+    icon: 'bg-gradient-to-br from-amber-500/20 to-orange-500/10',
+    sparkline: 'bg-amber-500/30',
+    gradient: 'from-amber-500/5 to-transparent',
+  },
+};
 
 // Hook for animated counter
 function useAnimatedCounter(endValue: number, duration: number = 1000) {
@@ -58,10 +84,13 @@ export function StatsCard({
   prefix = '',
   trend,
   icon,
-  iconBgColor = 'bg-mint/10',
+  iconBgColor,
+  accentColor = 'mint',
   delay = 0,
 }: StatsCardProps) {
   const animatedValue = useAnimatedCounter(value, 1200);
+  const colors = accentColors[accentColor];
+  const finalIconBg = iconBgColor || colors.icon;
 
   const TrendIcon = trend?.direction === 'up'
     ? TrendingUp
@@ -87,8 +116,11 @@ export function StatsCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
     >
-      <GlassCard padding="lg" animate={false} className="h-full">
-        <div className="flex items-start justify-between">
+      <GlassCard padding="lg" animate={false} className="h-full relative overflow-hidden">
+        {/* Subtle gradient accent at bottom */}
+        <div className={`absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t ${colors.gradient} pointer-events-none`} />
+
+        <div className="relative flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-text-secondary">{title}</p>
             <div className="mt-2 flex items-baseline gap-1">
@@ -121,7 +153,7 @@ export function StatsCard({
 
           {/* Icon */}
           <motion.div
-            className={`p-3 rounded-2xl ${iconBgColor}`}
+            className={`p-3 rounded-2xl ${finalIconBg}`}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: delay + 0.1, type: 'spring', stiffness: 200 }}
@@ -132,7 +164,7 @@ export function StatsCard({
 
         {/* Sparkline placeholder - visual element */}
         <motion.div
-          className="mt-4 h-8 flex items-end gap-0.5"
+          className="relative mt-4 h-8 flex items-end gap-0.5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: delay + 0.5 }}
@@ -142,7 +174,7 @@ export function StatsCard({
             return (
               <motion.div
                 key={i}
-                className="flex-1 bg-mint/20 rounded-sm"
+                className={`flex-1 ${colors.sparkline} rounded-sm`}
                 initial={{ height: 0 }}
                 animate={{ height: `${height}%` }}
                 transition={{ delay: delay + 0.5 + i * 0.03, duration: 0.3 }}
