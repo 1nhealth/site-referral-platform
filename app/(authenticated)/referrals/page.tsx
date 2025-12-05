@@ -3,17 +3,20 @@
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Download, Trash2, RefreshCcw, CheckSquare } from 'lucide-react';
+import { Plus, Download, Trash2, RefreshCcw, CheckSquare, MessageSquare, Sparkles, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { FilterBar, type FilterState } from '@/components/referrals/FilterBar';
 import { ReferralCard, ReferralListHeader } from '@/components/referrals/ReferralCard';
+import { BulkSMSModal } from '@/components/referrals/BulkSMSModal';
 import { mockReferrals } from '@/lib/mock-data/referrals';
+import { useProTier } from '@/lib/context/ProTierContext';
 import type { Referral } from '@/lib/types';
 
 export default function ReferralsPage() {
   const router = useRouter();
+  const { isPro, setShowUpgradeModal } = useProTier();
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     statuses: [],
@@ -24,6 +27,7 @@ export default function ReferralsPage() {
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showBulkSMS, setShowBulkSMS] = useState(false);
 
   // Filter and sort referrals
   const filteredReferrals = useMemo(() => {
@@ -205,6 +209,25 @@ export default function ReferralsPage() {
                 >
                   Update Status
                 </Button>
+                {/* Bulk SMS - Pro Feature */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  leftIcon={<MessageSquare className="w-4 h-4" />}
+                  onClick={() => isPro ? setShowBulkSMS(true) : setShowUpgradeModal(true)}
+                  className="relative"
+                >
+                  Bulk SMS
+                  {!isPro && (
+                    <span className="ml-1.5 flex items-center gap-0.5 px-1 py-0.5 rounded text-[9px] font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                      <Lock className="w-2 h-2" />
+                      PRO
+                    </span>
+                  )}
+                  {isPro && (
+                    <Sparkles className="w-3 h-3 ml-1 text-mint" />
+                  )}
+                </Button>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -293,6 +316,13 @@ export default function ReferralsPage() {
           Showing all {filteredReferrals.length} referrals
         </div>
       )}
+
+      {/* Bulk SMS Modal */}
+      <BulkSMSModal
+        isOpen={showBulkSMS}
+        onClose={() => setShowBulkSMS(false)}
+        selectedReferrals={filteredReferrals.filter((r) => selectedIds.has(r.id))}
+      />
     </div>
   );
 }
