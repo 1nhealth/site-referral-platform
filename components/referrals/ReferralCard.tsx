@@ -223,8 +223,7 @@ export function ReferralCard({
           onClick={() => onView?.(referral.id)}
           className={`
             flex items-center gap-4 p-4
-            bg-bg-primary/50 hover:bg-bg-tertiary/50
-            border border-glass-border rounded-xl
+            glass-list-item
             cursor-pointer transition-all duration-200
             ${isSelected ? 'ring-2 ring-mint' : ''}
           `}

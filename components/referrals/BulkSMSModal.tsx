@@ -163,10 +163,10 @@ export function BulkSMSModal({
               key={referral.id}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className={`flex items-center gap-3 p-3 rounded-xl border transition-colors cursor-pointer ${
+              className={`flex items-center gap-3 p-3 glass-modal-card cursor-pointer ${
                 selectedIds.has(referral.id)
-                  ? 'border-mint/30 bg-mint/5'
-                  : 'border-glass-border bg-bg-tertiary/30 hover:bg-bg-tertiary/50'
+                  ? 'ring-1 ring-mint/30 bg-mint/5'
+                  : 'hover:bg-bg-tertiary/50'
               }`}
               onClick={() => handleToggleRecipient(referral.id)}
             >
@@ -216,10 +216,10 @@ export function BulkSMSModal({
             key={template.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`p-3 rounded-xl border cursor-pointer transition-colors ${
+            className={`p-3 glass-modal-card cursor-pointer ${
               selectedTemplateId === template.id
-                ? 'border-mint/30 bg-mint/5'
-                : 'border-glass-border bg-bg-tertiary/30 hover:bg-bg-tertiary/50'
+                ? 'ring-1 ring-mint/30 bg-mint/5'
+                : 'hover:bg-bg-tertiary/50'
             }`}
             onClick={() => setSelectedTemplateId(template.id)}
           >
@@ -237,10 +237,10 @@ export function BulkSMSModal({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`p-3 rounded-xl border cursor-pointer transition-colors ${
+          className={`p-3 glass-modal-card cursor-pointer ${
             selectedTemplateId === 'custom'
-              ? 'border-mint/30 bg-mint/5'
-              : 'border-glass-border bg-bg-tertiary/30 hover:bg-bg-tertiary/50'
+              ? 'ring-1 ring-mint/30 bg-mint/5'
+              : 'hover:bg-bg-tertiary/50'
           }`}
           onClick={() => setSelectedTemplateId('custom')}
         >
@@ -318,7 +318,7 @@ export function BulkSMSModal({
       </GlassCard>
 
       {/* Recipients summary */}
-      <div className="flex items-center gap-3 p-3 rounded-xl bg-bg-tertiary/30 border border-glass-border">
+      <div className="flex items-center gap-3 p-3 glass-modal-card">
         <div className="p-2 rounded-xl bg-mint/10">
           <Users className="w-5 h-5 text-mint" />
         </div>
