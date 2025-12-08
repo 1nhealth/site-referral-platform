@@ -6,9 +6,8 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
 } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import { chartColors, chartGradients } from '@/lib/chart-theme';
 
 interface DataPoint {
@@ -26,20 +25,7 @@ interface AreaChartProps {
   showGrid?: boolean;
   showXAxis?: boolean;
   showYAxis?: boolean;
-}
-
-function CustomTooltip({ active, payload, label }: any) {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-bg-secondary/95 backdrop-blur-lg border border-glass-border rounded-xl px-4 py-3 shadow-xl">
-        <p className="text-sm font-medium text-text-primary">{label}</p>
-        <p className="text-lg font-bold text-mint mt-1">
-          {payload[0].value}
-        </p>
-      </div>
-    );
-  }
-  return null;
+  className?: string;
 }
 
 export function AreaChart({
@@ -51,12 +37,20 @@ export function AreaChart({
   showGrid = true,
   showXAxis = true,
   showYAxis = true,
+  className,
 }: AreaChartProps) {
   const gradient = chartGradients[color];
   const strokeColor = chartColors[color];
 
+  const chartConfig: ChartConfig = {
+    [dataKey]: {
+      label: dataKey,
+      color: strokeColor,
+    },
+  };
+
   return (
-    <ResponsiveContainer width="100%" height={height}>
+    <ChartContainer config={chartConfig} className={className} style={{ height }}>
       <RechartsAreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
         <defs>
           <linearGradient id={gradient.id} x1="0" y1="0" x2="0" y2="1">
@@ -94,7 +88,13 @@ export function AreaChart({
             dx={-10}
           />
         )}
-        <Tooltip content={<CustomTooltip />} />
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              className="bg-bg-secondary/95 backdrop-blur-lg border border-glass-border rounded-xl shadow-xl"
+            />
+          }
+        />
         <Area
           type="monotone"
           dataKey={dataKey}
@@ -103,6 +103,6 @@ export function AreaChart({
           fill={`url(#${gradient.id})`}
         />
       </RechartsAreaChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import { statusColors } from '@/lib/chart-theme';
 
 interface DataPoint {
@@ -18,20 +19,7 @@ interface DonutChartProps {
   outerRadius?: number;
   centerLabel?: string;
   centerValue?: string | number;
-}
-
-function CustomTooltip({ active, payload }: any) {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-bg-secondary/95 backdrop-blur-lg border border-glass-border rounded-xl px-4 py-3 shadow-xl">
-        <p className="text-sm font-medium text-text-primary">{payload[0].name}</p>
-        <p className="text-lg font-bold mt-1" style={{ color: payload[0].payload.fill }}>
-          {payload[0].value}
-        </p>
-      </div>
-    );
-  }
-  return null;
+  className?: string;
 }
 
 export function DonutChart({
@@ -41,12 +29,20 @@ export function DonutChart({
   outerRadius = 90,
   centerLabel,
   centerValue,
+  className,
 }: DonutChartProps) {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
+  // Build chart config from data
+  const chartConfig: ChartConfig = data.reduce((config, item) => {
+    config[item.name] = {
+      label: item.name,
+      color: item.color || statusColors[item.status || ''] || statusColors.other,
+    };
+    return config;
+  }, {} as ChartConfig);
 
   return (
     <div className="relative" style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ChartContainer config={chartConfig} className={className} style={{ height: '100%' }}>
         <PieChart>
           <Pie
             data={data}
@@ -56,6 +52,7 @@ export function DonutChart({
             outerRadius={outerRadius}
             paddingAngle={2}
             dataKey="value"
+            nameKey="name"
             animationBegin={0}
             animationDuration={800}
           >
@@ -67,9 +64,16 @@ export function DonutChart({
               />
             ))}
           </Pie>
-          <Tooltip content={<CustomTooltip />} />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                className="bg-bg-secondary/95 backdrop-blur-lg border border-glass-border rounded-xl shadow-xl"
+                hideLabel={false}
+              />
+            }
+          />
         </PieChart>
-      </ResponsiveContainer>
+      </ChartContainer>
 
       {/* Center Label */}
       {(centerLabel || centerValue) && (
@@ -87,7 +91,7 @@ export function DonutChart({
 
       {/* Legend */}
       <div className="absolute bottom-0 left-0 right-0 flex flex-wrap justify-center gap-4 px-4">
-        {data.slice(0, 5).map((entry, index) => (
+        {data.slice(0, 5).map((entry) => (
           <div key={entry.name} className="flex items-center gap-2">
             <div
               className="w-3 h-3 rounded-full"

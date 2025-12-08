@@ -6,10 +6,9 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
   Cell,
 } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
 import { chartColors } from '@/lib/chart-theme';
 
 interface DataPoint {
@@ -27,20 +26,7 @@ interface BarChartProps {
   layout?: 'vertical' | 'horizontal';
   showGrid?: boolean;
   barRadius?: number;
-}
-
-function CustomTooltip({ active, payload, label }: any) {
-  if (active && payload && payload.length) {
-    return (
-      <div className="bg-bg-secondary/95 backdrop-blur-lg border border-glass-border rounded-xl px-4 py-3 shadow-xl">
-        <p className="text-sm font-medium text-text-primary">{label}</p>
-        <p className="text-lg font-bold text-mint mt-1">
-          {payload[0].value}%
-        </p>
-      </div>
-    );
-  }
-  return null;
+  className?: string;
 }
 
 export function BarChart({
@@ -52,11 +38,19 @@ export function BarChart({
   layout = 'horizontal',
   showGrid = true,
   barRadius = 6,
+  className,
 }: BarChartProps) {
   const isVertical = layout === 'vertical';
 
+  const chartConfig: ChartConfig = {
+    [dataKey]: {
+      label: dataKey,
+      color: color,
+    },
+  };
+
   return (
-    <ResponsiveContainer width="100%" height={height}>
+    <ChartContainer config={chartConfig} className={className} style={{ height }}>
       <RechartsBarChart
         data={data}
         layout={layout}
@@ -106,7 +100,14 @@ export function BarChart({
             />
           </>
         )}
-        <Tooltip content={<CustomTooltip />} />
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              className="bg-bg-secondary/95 backdrop-blur-lg border border-glass-border rounded-xl shadow-xl"
+              formatter={(value) => `${value}%`}
+            />
+          }
+        />
         <Bar dataKey={dataKey} radius={barRadius}>
           {data.map((entry, index) => (
             <Cell
@@ -116,6 +117,6 @@ export function BarChart({
           ))}
         </Bar>
       </RechartsBarChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }
