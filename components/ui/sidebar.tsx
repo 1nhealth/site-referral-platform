@@ -239,7 +239,7 @@ const Sidebar = React.forwardRef<
             "group-data-[side=right]:rotate-180",
             // Base width varies by variant
             variant === "floating"
-              ? "w-[calc(var(--sidebar-width)_+_theme(spacing.4)_+_theme(spacing.3))] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+_theme(spacing.3))]"
+              ? "w-[calc(var(--sidebar-width)_+_theme(spacing.4)_+_theme(spacing.3))] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.8)_+_theme(spacing.6))]"
               : variant === "inset"
               ? "w-[--sidebar-width] group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
               : "w-[--sidebar-width] group-data-[collapsible=icon]:w-[--sidebar-width-icon]"

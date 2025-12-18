@@ -42,13 +42,13 @@ function AuthenticatedLayoutContent({ children }: { children: React.ReactNode })
 
       <SidebarProvider defaultOpen={true}>
         <AppSidebar />
-        <SidebarInset className="relative overflow-y-auto">
-          <Header />
-          <main className="flex-1 px-6 pb-6">
-            <div className="max-w-7xl mx-auto">
+        <SidebarInset className="relative overflow-visible">
+          <div className="h-full overflow-y-auto overflow-x-clip px-6">
+            <Header />
+            <main className="flex-1 px-4 pb-6">
               {children}
-            </div>
-          </main>
+            </main>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </>
