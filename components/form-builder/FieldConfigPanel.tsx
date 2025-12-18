@@ -149,7 +149,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.label}
                     onChange={(e) => handleLabelChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                   />
                 </div>
               )}
@@ -164,7 +164,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.label}
                     onChange={(e) => handleLabelChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                   />
                 </div>
               )}
@@ -179,7 +179,7 @@ export function FieldConfigPanel() {
                     value={field.content || ''}
                     onChange={(e) => handleContentChange(e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none"
                     placeholder="Enter your text..."
                   />
                 </div>
@@ -195,7 +195,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.placeholder || ''}
                     onChange={(e) => handlePlaceholderChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                     placeholder="Enter placeholder text..."
                   />
                 </div>
@@ -211,7 +211,7 @@ export function FieldConfigPanel() {
                     type="text"
                     value={field.helperText || ''}
                     onChange={(e) => handleHelperTextChange(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors"
                     placeholder="Add helper text..."
                   />
                 </div>

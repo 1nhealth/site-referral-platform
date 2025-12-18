@@ -116,7 +116,7 @@ export function FormSettingsPanel() {
                   value={form.description || ''}
                   onChange={(e) => updateFormDescription(e.target.value)}
                   rows={2}
-                  className="w-full px-4 py-2.5 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-bg-tertiary border border-glass-border text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors resize-none text-sm"
                   placeholder="Add a description for your form..."
                 />
               </div>

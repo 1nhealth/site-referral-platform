@@ -32,7 +32,6 @@ import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { FieldPalette } from './FieldPalette';
 import { BuilderCanvas } from './BuilderCanvas';
-import { FormPreview } from './FormPreview';
 import { FieldConfigPanel } from './FieldConfigPanel';
 import { FormTestPanel } from './FormTestPanel';
 import { FormSettingsPanel } from './FormSettingsPanel';
@@ -306,21 +305,21 @@ export function FormBuilder() {
           </div>
         </motion.div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex gap-4 min-h-0">
+        {/* Main Content - 2 Column Layout */}
+        <div className="flex-1 flex gap-6 min-h-0">
           {/* Field Palette */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="w-60 flex-shrink-0"
+            className="w-72 shrink-0"
           >
             <GlassCard padding="none" className="h-full overflow-hidden">
               <FieldPalette />
             </GlassCard>
           </motion.div>
 
-          {/* Builder Canvas */}
+          {/* Builder Canvas (serves as preview) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -329,18 +328,6 @@ export function FormBuilder() {
           >
             <GlassCard padding="none" className="h-full overflow-hidden">
               <BuilderCanvas />
-            </GlassCard>
-          </motion.div>
-
-          {/* Live Preview */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="w-80 flex-shrink-0"
-          >
-            <GlassCard padding="none" className="h-full overflow-hidden">
-              <FormPreview />
             </GlassCard>
           </motion.div>
         </div>

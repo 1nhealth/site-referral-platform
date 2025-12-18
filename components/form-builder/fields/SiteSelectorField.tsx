@@ -68,58 +68,65 @@ export function SiteSelectorField({
           />
         </div>
 
-        {/* Site List */}
-        <div className="space-y-2 max-h-64 overflow-y-auto">
-          {sortedSites.map((site) => (
-            <label
-              key={site.id}
-              className={cn(
-                'flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-colors',
-                'bg-bg-tertiary border border-glass-border',
-                value === site.id && 'border-mint bg-mint/5',
-                disabled && 'opacity-50 cursor-not-allowed'
-              )}
-            >
-              <div
+        {/* Site List - Only show when zip is complete */}
+        {userZip.length === 5 ? (
+          <div className="space-y-2 max-h-64 overflow-y-auto">
+            {sortedSites.map((site) => (
+              <label
+                key={site.id}
                 className={cn(
-                  'mt-1 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors flex-shrink-0',
-                  value === site.id
-                    ? 'border-mint bg-mint'
-                    : 'border-glass-border'
+                  'flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-colors',
+                  'bg-bg-tertiary border border-glass-border',
+                  value === site.id && 'border-mint bg-mint/5',
+                  disabled && 'opacity-50 cursor-not-allowed'
                 )}
               >
-                {value === site.id && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                )}
-              </div>
-              <input
-                type="radio"
-                name={field.name}
-                value={site.id}
-                checked={value === site.id}
-                onChange={() => onChange?.(site.id)}
-                disabled={disabled}
-                className="sr-only"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-mint flex-shrink-0" />
-                    <span className="text-sm font-medium text-text-primary">
-                      {site.name}
-                    </span>
-                  </div>
-                  {userZip.length === 5 && (
+                <div
+                  className={cn(
+                    'mt-1 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors shrink-0',
+                    value === site.id
+                      ? 'border-mint bg-mint'
+                      : 'border-glass-border'
+                  )}
+                >
+                  {value === site.id && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                  )}
+                </div>
+                <input
+                  type="radio"
+                  name={field.name}
+                  value={site.id}
+                  checked={value === site.id}
+                  onChange={() => onChange?.(site.id)}
+                  disabled={disabled}
+                  className="sr-only"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-4 h-4 text-mint shrink-0" />
+                      <span className="text-sm font-medium text-text-primary">
+                        {site.name}
+                      </span>
+                    </div>
                     <span className="text-xs text-text-muted whitespace-nowrap">
                       ~{site.distance} mi
                     </span>
-                  )}
+                  </div>
+                  <p className="text-xs text-text-muted mt-1 pl-6">{site.address}</p>
                 </div>
-                <p className="text-xs text-text-muted mt-1 pl-6">{site.address}</p>
-              </div>
-            </label>
-          ))}
-        </div>
+              </label>
+            ))}
+          </div>
+        ) : (
+          <div className="py-6 text-center">
+            <Building2 className="w-8 h-8 text-text-muted mx-auto mb-2" />
+            <p className="text-sm text-text-muted">
+              Enter your zip code above to see nearby sites
+            </p>
+          </div>
+        )}
       </div>
     </BaseFieldWrapper>
   );
