@@ -21,7 +21,7 @@ interface DropdownProps {
   disabled?: boolean;
   error?: string;
   className?: string;
-  size?: 'sm' | 'md';
+  size?: 'xs' | 'sm' | 'md';
 }
 
 export function Dropdown({
@@ -137,13 +137,13 @@ export function Dropdown({
           disabled={disabled}
           className={`
             w-full
-            ${size === 'sm' ? 'px-3 py-1.5' : 'px-3 py-1.5'}
-            ${size === 'sm'
+            ${size === 'xs' ? 'px-2.5 py-1' : size === 'sm' ? 'px-3 py-1.5' : 'px-3 py-1.5'}
+            ${size === 'xs' || size === 'sm'
               ? 'bg-white/80 dark:bg-white/20 border-white/90 dark:border-white/25 hover:bg-white/90 dark:hover:bg-white/25'
               : 'bg-white/30 dark:bg-white/10 backdrop-blur-sm border-glass-border'}
             border
-            ${size === 'sm' ? 'rounded-full' : 'rounded-xl'}
-            text-left ${size === 'sm' ? 'text-xs' : 'text-sm'}
+            ${size === 'xs' || size === 'sm' ? 'rounded-full' : 'rounded-xl'}
+            text-left ${size === 'xs' ? 'text-[10px]' : size === 'sm' ? 'text-xs' : 'text-sm'}
             transition-all duration-200
             focus:outline-none focus:ring-1 focus:ring-mint/50
             disabled:opacity-50 disabled:cursor-not-allowed
@@ -152,13 +152,13 @@ export function Dropdown({
           `}
         >
           <div className="flex items-center justify-between gap-2">
-            <div className={`flex-1 flex flex-wrap gap-1 ${size === 'sm' ? 'min-h-4' : 'min-h-5'}`}>
+            <div className={`flex-1 flex flex-wrap gap-1 ${size === 'xs' ? 'min-h-3.5' : size === 'sm' ? 'min-h-4' : 'min-h-5'}`}>
               {displayValue || (
                 <span className="text-text-muted">{placeholder}</span>
               )}
             </div>
             <ChevronDown
-              className={`${size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4'} text-text-muted transition-transform duration-200 ${
+              className={`${size === 'xs' ? 'w-3 h-3' : size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4'} text-text-muted transition-transform duration-200 ${
                 isOpen ? 'rotate-180' : ''
               }`}
             />

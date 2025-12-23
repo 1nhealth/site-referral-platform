@@ -224,76 +224,71 @@ export default function ReferralsPage() {
         <AnimatePresence>
           {selectedIds.size > 0 && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="px-4 py-3 border-b border-glass-border bg-mint/5"
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+              className="mx-4 mb-4 px-4 py-2 bg-white/80 dark:bg-white/20 backdrop-blur-xl border border-glass-border rounded-full shadow-lg"
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <button
                     onClick={handleSelectAll}
-                    className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary"
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors"
                   >
-                    <CheckSquare className="w-4 h-4" />
+                    <CheckSquare className="w-3.5 h-3.5" />
                     {selectedIds.size === filteredReferrals.length
                       ? 'Deselect All'
                       : 'Select All'}
                   </button>
-                  <span className="text-sm font-medium text-mint">
+                  <span className="text-xs font-medium text-mint">
                     {selectedIds.size} selected
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    leftIcon={<RefreshCcw className="w-4 h-4" />}
+                <div className="flex items-center gap-1.5">
+                  <button
                     onClick={handleBulkStatusChange}
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors"
                   >
-                    Update Status
-                  </Button>
+                    <RefreshCcw className="w-3.5 h-3.5" />
+                    Status
+                  </button>
                   {/* Bulk SMS - Pro Feature */}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    leftIcon={<MessageSquare className="w-4 h-4" />}
+                  <button
                     onClick={() => isPro ? setShowBulkSMS(true) : setShowUpgradeModal(true)}
-                    className="relative"
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors"
                   >
-                    Bulk SMS
+                    <MessageSquare className="w-3.5 h-3.5" />
+                    SMS
                     {!isPro && (
-                      <span className="ml-1.5 flex items-center gap-0.5 px-1 py-0.5 rounded text-[9px] font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                      <span className="flex items-center gap-0.5 px-1 py-0.5 rounded-full text-[8px] font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">
                         <Lock className="w-2 h-2" />
                         PRO
                       </span>
                     )}
                     {isPro && (
-                      <Sparkles className="w-3 h-3 ml-1 text-mint" />
+                      <Sparkles className="w-2.5 h-2.5 text-mint" />
                     )}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    leftIcon={<Download className="w-4 h-4" />}
+                  </button>
+                  <button
                     onClick={handleBulkExport}
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors"
                   >
+                    <Download className="w-3.5 h-3.5" />
                     Export
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    leftIcon={<Trash2 className="w-4 h-4 text-error" />}
-                    className="text-error hover:bg-error/10"
+                  </button>
+                  <button
+                    className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-error hover:bg-error/10 rounded-full transition-colors"
                   >
+                    <Trash2 className="w-3.5 h-3.5" />
                     Remove
-                  </Button>
+                  </button>
                   <button
                     onClick={() => setSelectedIds(new Set())}
-                    className="p-1.5 rounded-lg text-text-muted hover:text-text-primary hover:bg-bg-tertiary/50 transition-colors ml-2"
+                    className="p-1 rounded-full text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors ml-1"
                     title="Clear selection"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>

@@ -74,6 +74,7 @@ export function FilterBar({
   const [showAdvancedPanel, setShowAdvancedPanel] = useState(false);
   const [showStatusPicker, setShowStatusPicker] = useState(false);
   const [showStudyPicker, setShowStudyPicker] = useState(false);
+  const [showSortPicker, setShowSortPicker] = useState(false);
   const [statusSearchQuery, setStatusSearchQuery] = useState('');
   const [studySearchQuery, setStudySearchQuery] = useState('');
   const isIntegrated = variant === 'integrated';
@@ -213,7 +214,7 @@ export function FilterBar({
                         </div>
 
                         {/* Status badge */}
-                        <span className={`px-2 py-0.5 rounded text-xs font-medium truncate ${config.bgClass} ${config.textClass}`}>
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-medium truncate ${config.bgClass} ${config.textClass}`}>
                           {config.label}
                         </span>
                       </button>
@@ -339,6 +340,71 @@ export function FilterBar({
                 </button>
               </div>
             )}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+
+  // Render sort picker dropdown
+  const renderSortPicker = () => (
+    <AnimatePresence>
+      {showSortPicker && (
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setShowSortPicker(false)}
+          />
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full right-0 mt-2 z-50 w-48 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
+          >
+            <div className="p-2">
+              <div className="space-y-0.5">
+                {sortOptions.map((option) => {
+                  const isSelected = filters.sortBy === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        onFiltersChange({ ...filters, sortBy: option.value as FilterState['sortBy'] });
+                        setShowSortPicker(false);
+                      }}
+                      className={`
+                        w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                        transition-all duration-150
+                        ${isSelected
+                          ? 'bg-mint/10'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                        }
+                      `}
+                    >
+                      {/* Radio indicator */}
+                      <div className={`
+                        w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0
+                        transition-colors
+                        ${isSelected
+                          ? 'border-mint'
+                          : 'border-gray-300 dark:border-gray-600'
+                        }
+                      `}>
+                        {isSelected && (
+                          <div className="w-2 h-2 rounded-full bg-mint" />
+                        )}
+                      </div>
+
+                      {/* Option label */}
+                      <span className="text-sm text-text-primary">
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </motion.div>
         </>
       )}
@@ -478,16 +544,25 @@ export function FilterBar({
 
           {/* Actions Group */}
           <div className="flex items-center gap-1.5">
-            {/* Sort */}
-            <div className="w-32">
-              <Dropdown
-                options={sortOptions}
-                value={filters.sortBy}
-                onChange={(value) =>
-                  onFiltersChange({ ...filters, sortBy: value as FilterState['sortBy'] })
-                }
-                size="sm"
-              />
+            {/* Sort Picker */}
+            <div className="relative">
+              <button
+                onClick={() => setShowSortPicker(!showSortPicker)}
+                className={`
+                  flex items-center gap-1.5 px-3 py-1.5
+                  bg-white/80 dark:bg-white/20
+                  border border-white/90 dark:border-white/25
+                  rounded-full
+                  text-xs font-medium text-text-primary
+                  transition-all duration-200
+                  hover:bg-white/90 dark:hover:bg-white/25
+                  ${showSortPicker ? 'ring-1 ring-mint/50' : ''}
+                `}
+              >
+                <span>{sortOptions.find(o => o.value === filters.sortBy)?.label || 'Sort'}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-text-muted transition-transform ${showSortPicker ? 'rotate-180' : ''}`} />
+              </button>
+              {renderSortPicker()}
             </div>
 
             {/* View Toggle */}
@@ -524,7 +599,7 @@ export function FilterBar({
               return (
                 <span
                   key={status}
-                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium ${config.bgClass} ${config.textClass}`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${config.bgClass} ${config.textClass}`}
                 >
                   {config.label}
                   <button
@@ -541,7 +616,7 @@ export function FilterBar({
               return study ? (
                 <span
                   key={studyId}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded text-[11px] font-medium"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-full text-[11px] font-medium"
                 >
                   {study.name}
                   <button
@@ -779,7 +854,7 @@ export function FilterBar({
                 return study ? (
                   <span
                     key={studyId}
-                    className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-lg text-xs"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-purple-500/20 text-purple-600 dark:text-purple-400 rounded-full text-xs"
                   >
                     {study.name}
                     <button
