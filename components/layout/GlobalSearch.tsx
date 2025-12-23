@@ -150,12 +150,12 @@ export function GlobalSearch() {
       {/* Search Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-text-muted bg-white/40 dark:bg-white/10 backdrop-blur-sm hover:bg-white/50 dark:hover:bg-white/15 rounded-xl transition-colors"
+        className="relative flex items-center justify-between w-[200px] pl-9 pr-3 py-1.5 text-xs text-text-muted bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full hover:bg-white/90 dark:hover:bg-white/25 transition-all"
       >
-        <Search className="w-4 h-4" />
-        <span className="hidden md:inline">Search...</span>
-        <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs bg-white/50 dark:bg-white/10 rounded">
-          <Command className="w-3 h-3" />K
+        <Search className="absolute left-3 w-3.5 h-3.5 text-text-muted" />
+        <span>Search...</span>
+        <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] bg-white/60 dark:bg-white/15 rounded text-text-muted">
+          <Command className="w-2.5 h-2.5" />K
         </kbd>
       </button>
 

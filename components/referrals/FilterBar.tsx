@@ -158,18 +158,18 @@ export function FilterBar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-2 z-50 w-72 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
+            className="absolute top-full left-0 mt-2 z-50 w-72 glass-dropdown overflow-hidden"
           >
             {/* Search Input */}
-            <div className="p-3 border-b border-glass-border">
+            <div className="p-2">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-text-muted" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search statuses..."
                   value={statusSearchQuery}
                   onChange={(e) => setStatusSearchQuery(e.target.value)}
-                  className="w-full pl-7 pr-3 py-1.5 bg-bg-tertiary/50 border border-glass-border rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-mint/50"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                   autoFocus
                 />
               </div>
@@ -189,11 +189,11 @@ export function FilterBar({
                         key={status}
                         onClick={() => toggleStatus(status)}
                         className={`
-                          w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left
+                          w-full flex items-center gap-3 px-3 py-2 rounded-full text-left
                           transition-all duration-150
                           ${isSelected
-                            ? 'bg-mint/10'
-                            : 'hover:bg-bg-tertiary/50'
+                            ? 'bg-mint/15 dark:bg-mint/20'
+                            : 'hover:bg-mint/10 dark:hover:bg-mint/15'
                           }
                         `}
                       >
@@ -261,18 +261,18 @@ export function FilterBar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-0 mt-2 z-50 w-80 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
+            className="absolute top-full left-0 mt-2 z-50 w-80 glass-dropdown overflow-hidden"
           >
             {/* Search Input */}
-            <div className="p-3 border-b border-glass-border">
+            <div className="p-2">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-text-muted" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search studies..."
                   value={studySearchQuery}
                   onChange={(e) => setStudySearchQuery(e.target.value)}
-                  className="w-full pl-7 pr-3 py-1.5 bg-bg-tertiary/50 border border-glass-border rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-1 focus:ring-mint/50"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                   autoFocus
                 />
               </div>
@@ -291,11 +291,11 @@ export function FilterBar({
                         key={study.id}
                         onClick={() => toggleStudy(study.id)}
                         className={`
-                          w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                          w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-left
                           transition-all duration-150
                           ${isSelected
-                            ? 'bg-mint/10'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                            ? 'bg-mint/15 dark:bg-mint/20'
+                            : 'hover:bg-mint/10 dark:hover:bg-mint/15'
                           }
                         `}
                       >
@@ -360,7 +360,7 @@ export function FilterBar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full right-0 mt-2 z-50 w-48 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-glass-border rounded-xl shadow-xl overflow-hidden"
+            className="absolute top-full right-0 mt-2 z-50 w-48 glass-dropdown overflow-hidden"
           >
             <div className="p-2">
               <div className="space-y-0.5">
@@ -374,11 +374,11 @@ export function FilterBar({
                         setShowSortPicker(false);
                       }}
                       className={`
-                        w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                        w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-left
                         transition-all duration-150
                         ${isSelected
-                          ? 'bg-mint/10'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-800/50'
+                          ? 'bg-mint/15 dark:bg-mint/20'
+                          : 'hover:bg-mint/10 dark:hover:bg-mint/15'
                         }
                       `}
                     >

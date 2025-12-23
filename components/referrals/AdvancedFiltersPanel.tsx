@@ -737,7 +737,7 @@ function OperatorSelector({ operators, value, onChange }: OperatorSelectorProps)
                     setIsOpen(false);
                   }}
                   className={cn(
-                    'flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-left',
+                    'flex items-center gap-2 w-full px-3 py-1.5 rounded-full text-left',
                     'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
                     value === op.value && 'bg-mint/15 dark:bg-mint/20'
                   )}
@@ -894,7 +894,7 @@ function OptionSelect({ options, value, onChange, multiple = false, placeholder 
                   key={opt.value}
                   onClick={() => handleSelect(opt.value)}
                   className={cn(
-                    'flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-left',
+                    'flex items-center gap-2 w-full px-3 py-1.5 rounded-full text-left',
                     'hover:bg-mint/10 dark:hover:bg-mint/15 transition-all',
                     isSelected(opt.value) && 'bg-mint/15 dark:bg-mint/20'
                   )}
