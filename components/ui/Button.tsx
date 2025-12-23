@@ -13,7 +13,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-[radial-gradient(circle_at_bottom_right,#53CA97_0%,#42a279_50%)] text-white hover:bg-[radial-gradient(circle_at_bottom_right,#5ED4A3_0%,#4AAE85_50%)] focus:ring-mint/50 shadow-sm hover:shadow-md',
+          'bg-[linear-gradient(135deg,#36A67E_0%,#2E9B73_50%,#1F7A58_100%)] text-white hover:bg-[linear-gradient(135deg,#4AC498_0%,#36A67E_50%,#2E9B73_100%)] focus:ring-mint/50 shadow-sm hover:shadow-md',
         secondary:
           'glass-button text-text-primary border border-glass-border hover:border-mint/30 focus:ring-mint/30',
         ghost:

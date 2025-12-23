@@ -16,7 +16,7 @@ export function SubmitButtonElement({
   styling,
   onClick,
 }: SubmitButtonElementProps) {
-  const primaryColor = styling?.primaryColor || '#53CA97';
+  const primaryColor = styling?.primaryColor || '#2E9B73';
 
   return (
     <button

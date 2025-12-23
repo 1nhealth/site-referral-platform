@@ -94,7 +94,7 @@ export function getSourcePerformance() {
     return {
       name: source,
       value: conversionRates[source] || 30,
-      color: source === 'Referral' ? '#53CA97' : source === 'Website' ? '#7B9FE0' : undefined,
+      color: source === 'Referral' ? '#2E9B73' : source === 'Website' ? '#7B9FE0' : undefined,
     };
   });
 }

@@ -13,7 +13,7 @@ import {
 } from '@/lib/types/form-builder';
 
 const colorPresets = [
-  '#53CA97', // Mint (default)
+  '#2E9B73', // Mint (default)
   '#7991C6', // Vista Blue
   '#3B82F6', // Blue
   '#8B5CF6', // Purple

@@ -17,7 +17,7 @@ export function NextButtonElement({
   styling,
   onClick,
 }: NextButtonElementProps) {
-  const primaryColor = styling?.primaryColor || '#53CA97';
+  const primaryColor = styling?.primaryColor || '#2E9B73';
 
   return (
     <button

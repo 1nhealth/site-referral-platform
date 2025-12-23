@@ -18,7 +18,7 @@ interface ConfettiProps {
 }
 
 const colors = [
-  '#53CA97', // mint
+  '#2E9B73', // mint
   '#7B9FE0', // vista-blue
   '#A855F7', // purple
   '#F59E0B', // gold

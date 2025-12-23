@@ -572,9 +572,9 @@ function FieldSelector({ value, onChange, excludeIds = [] }: FieldSelectorProps)
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'flex items-center gap-2 px-3 py-1.5 rounded-full w-full text-left',
-          'bg-white/80 dark:bg-white/20',
-          'border border-white/90 dark:border-white/25',
-          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)] transition-all',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all',
           isOpen && 'ring-2 ring-mint/40'
         )}
       >
@@ -616,7 +616,7 @@ function FieldSelector({ value, onChange, excludeIds = [] }: FieldSelectorProps)
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search..."
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                 />
               </div>
             </div>
@@ -643,7 +643,7 @@ function FieldSelector({ value, onChange, excludeIds = [] }: FieldSelectorProps)
                           value === field.id && 'bg-mint/15 dark:bg-mint/20'
                         )}
                       >
-                        <div className="w-6 h-6 rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 flex items-center justify-center">
+                        <div className="w-6 h-6 rounded-full bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 flex items-center justify-center">
                           <field.icon className="w-3 h-3 text-gray-500 dark:text-gray-400" />
                         </div>
                         <span className="text-xs font-medium text-text-primary flex-1">{field.label}</span>
@@ -702,9 +702,9 @@ function OperatorSelector({ operators, value, onChange }: OperatorSelectorProps)
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-left',
-          'bg-white/80 dark:bg-white/20',
-          'border border-white/90 dark:border-white/25',
-          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)] transition-all',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all',
           isOpen && 'ring-2 ring-mint/40'
         )}
       >
@@ -843,9 +843,9 @@ function OptionSelect({ options, value, onChange, multiple = false, placeholder 
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'flex items-center gap-2 px-3 py-1.5 rounded-full w-full text-left min-w-[120px]',
-          'bg-white/80 dark:bg-white/20',
-          'border border-white/90 dark:border-white/25',
-          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-white/30 dark:hover:shadow-[0_2px_8px_rgba(255,255,255,0.08)] transition-all',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)] dark:hover:bg-slate-700/60 dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all',
           isOpen && 'ring-2 ring-mint/40'
         )}
       >
@@ -882,7 +882,7 @@ function OptionSelect({ options, value, onChange, multiple = false, placeholder 
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search..."
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                 />
               </div>
             </div>
@@ -983,7 +983,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
         type="date"
         value={value as string}
         onChange={(e) => onChange(e.target.value)}
-        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
+        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
       />
     );
   }
@@ -996,7 +996,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
         value={value as string}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Enter value..."
-        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
+        className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
       />
     );
   }
@@ -1008,7 +1008,7 @@ function ValueInput({ field, operator, value, onChange }: ValueInputProps) {
       value={value as string}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Enter value..."
-      className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
+      className="px-3 py-1.5 text-xs font-medium rounded-full bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40 transition-colors"
     />
   );
 }
@@ -1411,7 +1411,7 @@ export function AdvancedFiltersPanel({ isOpen, onClose }: AdvancedFiltersPanelPr
                 </button>
                 <button
                   onClick={onClose}
-                  className="px-5 py-1.5 text-xs font-medium text-white bg-mint hover:bg-mint-dark rounded-full shadow-sm hover:scale-105 active:scale-95 transition-all"
+                  className="px-5 py-1.5 text-xs font-medium text-white bg-[linear-gradient(135deg,#36A67E_0%,#2E9B73_50%,#1F7A58_100%)] hover:bg-[linear-gradient(135deg,#4AC498_0%,#36A67E_50%,#2E9B73_100%)] rounded-full shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all"
                 >
                   Apply Filters
                 </button>

@@ -243,12 +243,7 @@ export default function ReferralsPage() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-              className="mx-4 mb-4 px-4 py-2 rounded-full backdrop-blur-xl"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.95)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
-              }}
+              className="mx-4 mb-4 px-4 py-2 rounded-full backdrop-blur-xl bg-white/90 dark:bg-slate-800/80 border border-white/95 dark:border-slate-700/60 shadow-[0_4px_20px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3),0_1px_3px_rgba(0,0,0,0.2)]"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

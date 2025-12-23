@@ -1,7 +1,7 @@
 // Chart theme configuration matching the design system
 
 export const chartColors = {
-  mint: '#53CA97',
+  mint: '#2E9B73',
   vistaBlue: '#7B9FE0',
   purple: '#A855F7',
   warning: '#F59E0B',
@@ -19,8 +19,8 @@ export const chartGradients = {
   mint: {
     id: 'mintGradient',
     colors: [
-      { offset: '0%', color: '#53CA97', opacity: 0.8 },
-      { offset: '100%', color: '#53CA97', opacity: 0.1 },
+      { offset: '0%', color: '#2E9B73', opacity: 0.8 },
+      { offset: '100%', color: '#2E9B73', opacity: 0.1 },
     ],
   },
   vistaBlue: {
@@ -40,7 +40,7 @@ export const chartGradients = {
 };
 
 export const statusColors: Record<string, string> = {
-  new: '#53CA97',                 // mint
+  new: '#2E9B73',                 // mint
   attempt_1: '#F59E0B',           // amber
   attempt_2: '#F59E0B',           // amber
   attempt_3: '#EA580C',           // orange
@@ -55,7 +55,7 @@ export const statusColors: Record<string, string> = {
 };
 
 export const funnelColors = [
-  '#53CA97',  // New
+  '#2E9B73',  // New
   '#7B9FE0',  // Contact Attempted
   '#A855F7',  // SMS Sent
   '#06B6D4',  // Scheduled

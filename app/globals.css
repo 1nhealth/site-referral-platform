@@ -9,11 +9,11 @@
    ======================================== */
 
 :root {
-  /* Primary - Mint (original brand color for accents) */
-  --mint: #53CA97;
-  --mint-light: #75D5AC;
-  --mint-dark: #42A279;
-  --mint-glow: rgba(83, 202, 151, 0.3);
+  /* Primary - Mint (accessible teal-green palette) */
+  --mint: #2E9B73;
+  --mint-light: #36A67E;
+  --mint-dark: #1F7A58;
+  --mint-glow: rgba(46, 155, 115, 0.3);
 
   /* Enterprise Button - Brand-tinted neutral (12:1+ contrast, WCAG AAA) */
   /* Dark with subtle mint undertone - sophisticated & accessible */
@@ -33,13 +33,13 @@
   --slate-gray: #678283;
 
   /* Gradient Background Colors - Soft pastels */
-  --gradient-mint: rgba(83, 202, 151, 0.12);
+  --gradient-mint: rgba(46, 155, 115, 0.12);
   --gradient-blue: rgba(121, 145, 198, 0.10);
   --gradient-pink: rgba(244, 190, 220, 0.08);
   --gradient-peach: rgba(254, 215, 190, 0.06);
 
   /* Semantic */
-  --success: #53CA97;
+  --success: #2E9B73;
   --warning: #F59E0B;
   --error: #EF4444;
   --info: #7991C6;
@@ -886,26 +886,26 @@ textarea,
 
 /* Glass Dropdown - more opaque for readability */
 .glass-dropdown {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: var(--radius-xl);
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.12),
     0 4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .dark .glass-dropdown {
-  background: rgba(30, 35, 45, 0.88);
+  background: rgba(30, 41, 59, 0.96);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(100, 116, 139, 0.4);
   box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.4),
-    0 4px 12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 /* ========================================
@@ -1400,12 +1400,12 @@ textarea:focus {
 
 /* Status badge base - New */
 .status-new {
-  background-color: rgba(83, 202, 151, 0.2);
-  color: #42A279;
+  background-color: rgba(46, 155, 115, 0.2);
+  color: #1F7A58;
 }
 .dark .status-new {
-  background-color: rgba(83, 202, 151, 0.2);
-  color: #53CA97;
+  background-color: rgba(46, 155, 115, 0.2);
+  color: #3FB98B;
 }
 
 /* Status badge - Attempt 1 */

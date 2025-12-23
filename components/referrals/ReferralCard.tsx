@@ -214,7 +214,7 @@ export function ReferralCard({
             e.stopPropagation();
             onView?.(referral.id);
           }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-mint hover:bg-mint/10 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-mint-dark hover:bg-mint-dark/10 transition-colors"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >

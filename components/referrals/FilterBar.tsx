@@ -169,7 +169,7 @@ export function FilterBar({
                   placeholder="Search statuses..."
                   value={statusSearchQuery}
                   onChange={(e) => setStatusSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                   autoFocus
                 />
               </div>
@@ -272,7 +272,7 @@ export function FilterBar({
                   placeholder="Search studies..."
                   value={studySearchQuery}
                   onChange={(e) => setStudySearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-white/20 border border-white/90 dark:border-white/25 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-white/80 dark:bg-slate-800/60 border border-white/90 dark:border-slate-700/50 rounded-full text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-mint/40"
                   autoFocus
                 />
               </div>
@@ -424,12 +424,12 @@ export function FilterBar({
                 onClick={() => setShowStatusPicker(!showStatusPicker)}
                 className={`
                   flex items-center gap-1.5 px-3 py-1.5
-                  bg-white/80 dark:bg-white/20
-                  border border-white/90 dark:border-white/25
+                  bg-white/95 dark:bg-slate-800/60
+                  border border-white dark:border-slate-700/50
                   rounded-full
                   text-xs font-medium text-text-primary
                   transition-all duration-200
-                  hover:bg-white/90 dark:hover:bg-white/25
+                  hover:bg-white dark:hover:bg-slate-700/60
                   ${showStatusPicker ? 'ring-1 ring-mint/50' : ''}
                   ${filters.statuses.length > 0 ? 'bg-mint/15 border-mint/40' : ''}
                 `}
@@ -451,12 +451,12 @@ export function FilterBar({
                 onClick={() => setShowStudyPicker(!showStudyPicker)}
                 className={`
                   flex items-center gap-1.5 px-3 py-1.5
-                  bg-white/80 dark:bg-white/20
-                  border border-white/90 dark:border-white/25
+                  bg-white/95 dark:bg-slate-800/60
+                  border border-white dark:border-slate-700/50
                   rounded-full
                   text-xs font-medium text-text-primary
                   transition-all duration-200
-                  hover:bg-white/90 dark:hover:bg-white/25
+                  hover:bg-white dark:hover:bg-slate-700/60
                   ${showStudyPicker ? 'ring-1 ring-mint/50' : ''}
                   ${filters.studyIds.length > 0 ? 'bg-mint/15 border-mint/40' : ''}
                 `}
@@ -477,12 +477,12 @@ export function FilterBar({
               onClick={() => setShowAdvancedPanel(true)}
               className={`
                 relative flex items-center justify-center p-1.5
-                bg-white/80 dark:bg-white/20
-                border border-white/90 dark:border-white/25
+                bg-white/95 dark:bg-slate-800/60
+                border border-white dark:border-slate-700/50
                 rounded-full
                 text-text-primary
                 transition-all duration-200
-                hover:bg-white/90 dark:hover:bg-white/25
+                hover:bg-white dark:hover:bg-slate-700/60
                 ${filters.assignedTo.length > 0 ? 'bg-mint/15 border-mint/40 text-mint' : ''}
               `}
               title="More filters"
@@ -519,14 +519,14 @@ export function FilterBar({
               }
               className="
                 w-full pl-9 pr-8 py-1.5
-                bg-white/80 dark:bg-white/20
-                border border-white/90 dark:border-white/25
+                bg-white/95 dark:bg-slate-800/60
+                border border-white dark:border-slate-700/50
                 rounded-full
                 text-xs text-text-primary
                 placeholder:text-text-muted
                 transition-all duration-200
-                hover:bg-white/90 dark:hover:bg-white/25
-                focus:outline-none focus:ring-1 focus:ring-mint/50 focus:bg-white/90
+                hover:bg-white dark:hover:bg-slate-700/60
+                focus:outline-none focus:ring-1 focus:ring-mint/50 focus:bg-white dark:focus:bg-slate-700/70
               "
             />
             {filters.search && (
@@ -550,12 +550,12 @@ export function FilterBar({
                 onClick={() => setShowSortPicker(!showSortPicker)}
                 className={`
                   flex items-center gap-1.5 px-3 py-1.5
-                  bg-white/80 dark:bg-white/20
-                  border border-white/90 dark:border-white/25
+                  bg-white/95 dark:bg-slate-800/60
+                  border border-white dark:border-slate-700/50
                   rounded-full
                   text-xs font-medium text-text-primary
                   transition-all duration-200
-                  hover:bg-white/90 dark:hover:bg-white/25
+                  hover:bg-white dark:hover:bg-slate-700/60
                   ${showSortPicker ? 'ring-1 ring-mint/50' : ''}
                 `}
               >
@@ -566,13 +566,13 @@ export function FilterBar({
             </div>
 
             {/* View Toggle */}
-            <div className="flex items-center gap-0.5 p-0.5 bg-white/80 dark:bg-white/20 rounded-full border border-white/90 dark:border-white/25">
+            <div className="flex items-center gap-0.5 p-0.5 bg-white/95 dark:bg-slate-800/60 rounded-full border border-white dark:border-slate-700/50">
               <button
                 onClick={() => onViewModeChange('grid')}
                 className={`p-1.5 rounded-full transition-colors focus:outline-none ${
                   viewMode === 'grid'
                     ? 'bg-mint text-white'
-                    : 'text-text-muted hover:text-text-primary'
+                    : 'text-text-primary dark:text-text-muted hover:text-text-primary'
                 }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
@@ -582,7 +582,7 @@ export function FilterBar({
                 className={`p-1.5 rounded-full transition-colors focus:outline-none ${
                   viewMode === 'list'
                     ? 'bg-mint text-white'
-                    : 'text-text-muted hover:text-text-primary'
+                    : 'text-text-primary dark:text-text-muted hover:text-text-primary'
                 }`}
               >
                 <List className="w-3.5 h-3.5" />
@@ -772,7 +772,7 @@ export function FilterBar({
             className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
               viewMode === 'grid'
                 ? 'bg-mint/80 text-white backdrop-blur-sm shadow-sm'
-                : 'text-text-muted glass-hover'
+                : 'text-text-primary dark:text-text-muted glass-hover'
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
@@ -782,7 +782,7 @@ export function FilterBar({
             className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
               viewMode === 'list'
                 ? 'bg-mint/80 text-white backdrop-blur-sm shadow-sm'
-                : 'text-text-muted glass-hover'
+                : 'text-text-primary dark:text-text-muted glass-hover'
             }`}
           >
             <List className="w-4 h-4" />

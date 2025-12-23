@@ -570,7 +570,7 @@ export function createDefaultForm(): FormDefinition {
     ],
     fields: {},
     styling: {
-      primaryColor: '#53CA97',
+      primaryColor: '#2E9B73',
       backgroundColor: 'transparent',
       textColor: '#1B2222',
       fieldRadius: 'lg',
