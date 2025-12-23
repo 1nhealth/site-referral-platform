@@ -42,7 +42,7 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
     ref
   ) => {
     const shimmerClass = shimmer ? 'glass-card-shimmer' : '';
-    const baseClasses = `${variantClasses[variant]} ${paddingClasses[padding]} ${shimmerClass} ${className}`.trim();
+    const baseClasses = `${variantClasses[variant]} ${paddingClasses[padding]} ${shimmerClass} rounded-[32px] ${className}`.trim();
 
     if (!animate) {
       return (
