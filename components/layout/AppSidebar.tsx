@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   FileEdit,
+  CalendarDays,
 } from 'lucide-react';
 import { Logo } from '@/components/ui';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -38,6 +39,7 @@ const navItems = [
   { href: '/referrals', label: 'Referrals', icon: Users },
   { href: '/analytics', label: 'Analytics', icon: BarChart3, isPro: true },
   { href: '/working-session', label: 'Working Session', icon: Phone },
+  { href: '/appointments', label: 'Appointments', icon: CalendarDays },
   { href: '/form-builder', label: 'Form Builder', icon: FileEdit },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];

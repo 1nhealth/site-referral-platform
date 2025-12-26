@@ -188,3 +188,73 @@ export function getAppointmentsByReferral(referralId: string): Appointment[] {
 export function getAppointmentCountThisWeek(): number {
   return getUpcomingAppointments(7).length;
 }
+
+// Get appointments that are past their scheduled time (past due)
+export function getPastDueAppointments(): Appointment[] {
+  const now = new Date();
+  // Consider past due if more than 2 hours ago
+  const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+
+  return mockAppointments.filter(appt => {
+    const scheduledTime = new Date(appt.scheduledFor);
+    return scheduledTime < twoHoursAgo;
+  }).sort((a, b) => new Date(b.scheduledFor).getTime() - new Date(a.scheduledFor).getTime());
+}
+
+// Get appointments for a specific date
+export function getAppointmentsForDate(date: Date): Appointment[] {
+  const targetDate = new Date(date);
+  targetDate.setHours(0, 0, 0, 0);
+  const nextDay = new Date(targetDate);
+  nextDay.setDate(nextDay.getDate() + 1);
+
+  return mockAppointments.filter(appt => {
+    const apptDate = new Date(appt.scheduledFor);
+    return apptDate >= targetDate && apptDate < nextDay;
+  }).sort((a, b) =>
+    new Date(a.scheduledFor).getTime() - new Date(b.scheduledFor).getTime()
+  );
+}
+
+// Get appointments for a specific month
+export function getAppointmentsForMonth(year: number, month: number): Appointment[] {
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59);
+
+  return mockAppointments.filter(appt => {
+    const apptDate = new Date(appt.scheduledFor);
+    return apptDate >= startOfMonth && apptDate <= endOfMonth;
+  });
+}
+
+// Get weekly stats
+export function getWeeklyStats(): {
+  total: number;
+  byType: Record<Appointment['type'], number>;
+  byDay: { date: Date; count: number }[];
+} {
+  const upcoming = getUpcomingAppointments(7);
+  const byType: Record<Appointment['type'], number> = {
+    phone_screen: 0,
+    in_person_screen: 0,
+    consent_visit: 0,
+  };
+
+  upcoming.forEach(appt => {
+    byType[appt.type]++;
+  });
+
+  // Group by day
+  const byDay: { date: Date; count: number }[] = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+    date.setHours(0, 0, 0, 0);
+    byDay.push({
+      date: new Date(date),
+      count: getAppointmentsForDate(date).length,
+    });
+  }
+
+  return { total: upcoming.length, byType, byDay };
+}

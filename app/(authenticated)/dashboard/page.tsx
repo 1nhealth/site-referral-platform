@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { GlassCard } from '@/components/ui';
 import { Button } from '@/components/ui/Button';
@@ -36,6 +37,7 @@ import { getRecentActivity } from '@/lib/mock-data/activity';
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const router = useRouter();
   const [showDigest, setShowDigest] = useState(false);
   const firstName = user?.firstName || 'there';
 
@@ -177,7 +179,10 @@ export default function DashboardPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.3 }}
             >
-              <AppointmentsTimeline appointments={todaysAppointments} />
+              <AppointmentsTimeline
+                appointments={todaysAppointments}
+                onViewAll={() => router.push('/appointments')}
+              />
             </motion.div>
 
             {/* Needs Attention */}
