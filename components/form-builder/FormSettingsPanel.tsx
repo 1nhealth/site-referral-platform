@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Palette, ExternalLink, Globe, ChevronDown, Paintbrush } from 'lucide-react';
 import { useFormBuilder } from '@/lib/context/FormBuilderContext';
@@ -25,6 +25,81 @@ const languageOptions = [
   { value: 'ja', label: 'Japanese' },
   { value: 'ko', label: 'Korean' },
 ];
+
+// Language Dropdown Component
+interface LanguageDropdownProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+function LanguageDropdown({ value, onChange }: LanguageDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectedLabel = languageOptions.find(l => l.value === value)?.label || 'Select language...';
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          'flex items-center justify-between gap-2 px-4 py-3 rounded-full w-full text-left',
+          'bg-white/80 dark:bg-slate-800/60',
+          'border border-white/90 dark:border-slate-700/50',
+          'hover:bg-white hover:border-white hover:shadow-[0_2px_8px_rgba(255,255,255,0.5)]',
+          'dark:hover:bg-slate-800/80 dark:hover:border-slate-600/50',
+          'transition-all duration-200 text-sm',
+          isOpen && 'ring-2 ring-mint/40'
+        )}
+      >
+        <span className="text-text-primary truncate">{selectedLabel}</span>
+        <ChevronDown className={cn('w-4 h-4 text-text-muted transition-transform', isOpen && 'rotate-180')} />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-0 right-0 mt-2 z-50 overflow-hidden flex flex-col rounded-xl glass-dropdown"
+          >
+            <div className="p-2 space-y-0.5">
+              {languageOptions.map((lang) => (
+                <button
+                  key={lang.value}
+                  onClick={() => {
+                    onChange(lang.value);
+                    setIsOpen(false);
+                  }}
+                  className={cn(
+                    'w-full px-3 py-2 text-left text-sm rounded-lg transition-colors',
+                    value === lang.value
+                      ? 'bg-mint/10 text-mint font-medium'
+                      : 'text-text-primary hover:bg-white/50 dark:hover:bg-white/10'
+                  )}
+                >
+                  {lang.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 // All available style keys for global defaults
 const allStyleKeys: (keyof AdvancedFieldStyles)[] = [
@@ -255,17 +330,10 @@ export function FormSettingsPanel() {
                     Default Language
                   </label>
                 </div>
-                <select
+                <LanguageDropdown
                   value={settings.defaultLanguage || 'en'}
-                  onChange={(e) => updateSettings({ defaultLanguage: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-white/40 dark:bg-white/10 backdrop-blur-sm border border-white/50 dark:border-white/10 text-text-primary focus:outline-none focus:ring-2 focus:ring-mint/50 focus:border-mint transition-colors text-sm"
-                >
-                  {languageOptions.map((lang) => (
-                    <option key={lang.value} value={lang.value}>
-                      {lang.label}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(value) => updateSettings({ defaultLanguage: value })}
+                />
               </div>
 
               {/* Redirect URLs */}
