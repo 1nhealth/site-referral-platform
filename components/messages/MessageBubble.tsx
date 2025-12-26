@@ -31,7 +31,7 @@ export function MessageBubble({ message, animationDelay = 0 }: MessageBubbleProp
         className={cn(
           'max-w-[80%] px-4 py-2.5 rounded-2xl',
           isOutbound
-            ? 'bg-mint text-white rounded-br-md'
+            ? 'bg-[#007AFF] text-white rounded-br-md'
             : 'bg-white/50 dark:bg-white/10 backdrop-blur-sm text-text-primary rounded-bl-md'
         )}
       >
