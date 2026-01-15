@@ -68,6 +68,7 @@ export default function DashboardPage() {
       icon: <Users className="w-6 h-6 text-mint" />,
       accentColor: 'mint' as const,
       trend: { value: 12, direction: 'up' as const },
+      onView: () => router.push('/referrals'),
     },
     {
       title: 'Appointments This Week',
@@ -75,6 +76,7 @@ export default function DashboardPage() {
       icon: <Calendar className="w-6 h-6 text-purple-500" />,
       accentColor: 'purple' as const,
       trend: { value: 8, direction: 'up' as const },
+      onView: () => router.push('/appointments'),
     },
     {
       title: 'Signed ICFs (Monthly)',
@@ -82,6 +84,7 @@ export default function DashboardPage() {
       icon: <CheckCircle className="w-6 h-6 text-mint" />,
       accentColor: 'mint' as const,
       trend: { value: 15, direction: 'up' as const },
+      onView: () => router.push('/referrals?status=icf_signed'),
     },
     {
       title: 'Conversion Rate',
@@ -90,6 +93,7 @@ export default function DashboardPage() {
       icon: <TrendingUp className="w-6 h-6 text-vista-blue" />,
       accentColor: 'blue' as const,
       trend: { value: 2, direction: 'up' as const },
+      onView: () => router.push('/analytics'),
     },
   ];
 
@@ -165,6 +169,7 @@ export default function DashboardPage() {
               accentColor={stat.accentColor}
               trend={stat.trend}
               delay={0.1 + index * 0.05}
+              onView={stat.onView}
             />
           ))}
         </div>

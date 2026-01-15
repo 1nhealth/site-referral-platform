@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, ArrowRight } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 
 type AccentColor = 'mint' | 'blue' | 'purple' | 'amber';
@@ -20,6 +20,7 @@ interface StatsCardProps {
   iconBgColor?: string;
   accentColor?: AccentColor;
   delay?: number;
+  onView?: () => void;
 }
 
 const accentColors: Record<AccentColor, { icon: string; sparkline: string; gradient: string }> = {
@@ -87,6 +88,7 @@ export function StatsCard({
   iconBgColor,
   accentColor = 'mint',
   delay = 0,
+  onView,
 }: StatsCardProps) {
   const animatedValue = useAnimatedCounter(value, 1200);
   const colors = accentColors[accentColor];
@@ -127,7 +129,7 @@ export function StatsCard({
         <div className="relative flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm font-medium text-text-secondary">{title}</p>
-            <div className="mt-2 flex items-baseline gap-1">
+            <div className="mt-2 flex items-center gap-2">
               <motion.span
                 className="text-3xl font-bold text-text-primary"
                 initial={{ opacity: 0 }}
@@ -136,6 +138,21 @@ export function StatsCard({
               >
                 {prefix}{animatedValue}{suffix}
               </motion.span>
+              {onView && (
+                <motion.button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onView();
+                  }}
+                  className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-medium text-text-primary glass-button rounded-full hover:scale-105 active:scale-95 transition-all group"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isHovered ? 1 : 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  view
+                  <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform" />
+                </motion.button>
+              )}
             </div>
 
             {/* Trend Indicator */}
@@ -193,6 +210,7 @@ export function StatsCard({
             );
           })}
         </motion.div>
+
       </GlassCard>
     </motion.div>
   );
