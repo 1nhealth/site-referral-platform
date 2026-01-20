@@ -3,6 +3,7 @@ export interface KBDocument {
   title: string;
   slug: string;
   categoryId: string;
+  date: string;
 }
 
 export interface KBCategory {
@@ -24,8 +25,8 @@ export const kbCategories: KBCategory[] = [
     color: 'mint',
     totalDocuments: 12,
     documents: [
-      { id: 'doc-1', title: 'Configure Calendar Engine', slug: 'configure-calendar-engine', categoryId: 'admin' },
-      { id: 'doc-2', title: 'Managing 1nData Automations Guide', slug: 'managing-automations', categoryId: 'admin' },
+      { id: 'doc-1', title: 'Configure Calendar Engine', slug: 'configure-calendar-engine', categoryId: 'admin', date: '2025-09-17' },
+      { id: 'doc-2', title: 'Managing 1nData Automations Guide', slug: 'managing-automations', categoryId: 'admin', date: '2025-09-17' },
     ],
   },
   {
@@ -36,7 +37,7 @@ export const kbCategories: KBCategory[] = [
     color: 'blue',
     totalDocuments: 8,
     documents: [
-      { id: 'doc-3', title: 'Create a Custom SMS Message', slug: 'create-custom-sms', categoryId: 'study-management' },
+      { id: 'doc-3', title: 'Create a Custom SMS Message', slug: 'create-custom-sms', categoryId: 'study-management', date: '2025-08-22' },
     ],
   },
   {
@@ -47,8 +48,8 @@ export const kbCategories: KBCategory[] = [
     color: 'purple',
     totalDocuments: 6,
     documents: [
-      { id: 'doc-4', title: 'How to Log In and Use the Staging Platform', slug: 'staging-login', categoryId: 'stage-testing' },
-      { id: 'doc-5', title: 'Matching Production-Area Studies to Staging-Area Studies', slug: 'matching-studies', categoryId: 'stage-testing' },
+      { id: 'doc-4', title: 'How to Log In and Use the Staging Platform', slug: 'staging-login', categoryId: 'stage-testing', date: '2025-07-15' },
+      { id: 'doc-5', title: 'Matching Production-Area Studies to Staging-Area Studies', slug: 'matching-studies', categoryId: 'stage-testing', date: '2025-07-10' },
     ],
   },
   {
@@ -59,8 +60,8 @@ export const kbCategories: KBCategory[] = [
     color: 'amber',
     totalDocuments: 5,
     documents: [
-      { id: 'doc-6', title: 'What are Advanced Filters', slug: 'advanced-filters', categoryId: 'search-filters' },
-      { id: 'doc-7', title: 'Searching and Filtering Referrals, Studies, and More in 1nData', slug: 'searching-filtering', categoryId: 'search-filters' },
+      { id: 'doc-6', title: 'What are Advanced Filters', slug: 'advanced-filters', categoryId: 'search-filters', date: '2025-06-28' },
+      { id: 'doc-7', title: 'Searching and Filtering Referrals, Studies, and More in 1nData', slug: 'searching-filtering', categoryId: 'search-filters', date: '2025-06-20' },
     ],
   },
   {
@@ -71,8 +72,8 @@ export const kbCategories: KBCategory[] = [
     color: 'rose',
     totalDocuments: 7,
     documents: [
-      { id: 'doc-8', title: 'User Invites', slug: 'user-invites', categoryId: 'accounts-passwords' },
-      { id: 'doc-9', title: 'Accessing Your 1nData Account', slug: 'accessing-account', categoryId: 'accounts-passwords' },
+      { id: 'doc-8', title: 'User Invites', slug: 'user-invites', categoryId: 'accounts-passwords', date: '2025-05-14' },
+      { id: 'doc-9', title: 'Accessing Your 1nData Account', slug: 'accessing-account', categoryId: 'accounts-passwords', date: '2025-05-10' },
     ],
   },
   {
@@ -83,9 +84,9 @@ export const kbCategories: KBCategory[] = [
     color: 'cyan',
     totalDocuments: 10,
     documents: [
-      { id: 'doc-10', title: 'Referral Re-engagement Campaigns by 1nHealth', slug: 'reengagement-campaigns', categoryId: 'support' },
-      { id: 'doc-11', title: 'Bug Ticket Process', slug: 'bug-ticket-process', categoryId: 'support' },
-      { id: 'doc-12', title: 'Requesting 1nHealth Support', slug: 'requesting-support', categoryId: 'support' },
+      { id: 'doc-10', title: 'Referral Re-engagement Campaigns by 1nHealth', slug: 'reengagement-campaigns', categoryId: 'support', date: '2025-04-30' },
+      { id: 'doc-11', title: 'Bug Ticket Process', slug: 'bug-ticket-process', categoryId: 'support', date: '2025-04-25' },
+      { id: 'doc-12', title: 'Requesting 1nHealth Support', slug: 'requesting-support', categoryId: 'support', date: '2025-04-20' },
     ],
   },
 ];
@@ -98,4 +99,8 @@ export function searchCategories(query: string): KBCategory[] {
       cat.description.toLowerCase().includes(lowerQuery) ||
       cat.documents.some((doc) => doc.title.toLowerCase().includes(lowerQuery))
   );
+}
+
+export function getCategoryById(id: string): KBCategory | undefined {
+  return kbCategories.find((cat) => cat.id === id);
 }
