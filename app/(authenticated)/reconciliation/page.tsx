@@ -2,90 +2,96 @@
 
 import { useReducer, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scale, FileUp, Search, CheckCircle2, ListChecks } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { IRTUpload } from '@/components/reconciliation/IRTUpload';
-import { IRTRecordReview } from '@/components/reconciliation/IRTRecordReview';
-import { MatchingWizard } from '@/components/reconciliation/MatchingWizard';
-import { ReconTotalList } from '@/components/reconciliation/ReconTotalList';
-import { mockReferrals, getReferralsByStudy } from '@/lib/mock-data/referrals';
-import { findMatches } from '@/lib/utils/matching';
-import type { Referral } from '@/lib/types';
+import { Scale } from 'lucide-react';
+import { ReconTabBar } from '@/components/reconciliation/ReconTabBar';
+import { ReconDashboard } from '@/components/reconciliation/ReconDashboard';
+import { ReconImportsList } from '@/components/reconciliation/ReconImportsList';
+import { ReconSubjectMatcher } from '@/components/reconciliation/ReconSubjectMatcher';
+import { ReconDecisionPanel } from '@/components/reconciliation/ReconDecisionPanel';
+import { ReconApprovalQueue } from '@/components/reconciliation/ReconApprovalQueue';
+import {
+  mockSubjects,
+  mockPendingApprovals,
+} from '@/lib/mock-data/reconciliation';
 import type {
-  ReconciliationState,
-  ReconciliationAction,
-  ReconciliationStep,
-  IRTRecord,
-  ReconciliationMatch,
-  MatchCandidate,
+  ReconTab,
+  IRTImport,
+  PotentialMatch,
+  MatchDecision,
+  ReconPageState,
+  ReconPageAction,
 } from '@/lib/types/reconciliation';
 
 // Initial state
-const initialState: ReconciliationState = {
-  step: 'import',
+const initialState: ReconPageState = {
+  activeTab: 'dashboard',
   selectedStudyId: null,
-  fileName: null,
-  irtRecords: [],
-  matches: [],
-  currentIndex: 0,
-  isProcessing: false,
+  selectedImport: null,
+  subjects: [],
+  currentSubjectIndex: 0,
+  decisions: {},
+  filterConfidence: 'all',
+  filterStatus: 'pending',
+  showDecisionPanel: false,
+  selectedMatch: null,
 };
 
 // Reducer
-function reconciliationReducer(
-  state: ReconciliationState,
-  action: ReconciliationAction
-): ReconciliationState {
+function reconReducer(state: ReconPageState, action: ReconPageAction): ReconPageState {
   switch (action.type) {
-    case 'SET_STEP':
-      return { ...state, step: action.step };
+    case 'SET_TAB':
+      return { ...state, activeTab: action.tab };
     case 'SET_STUDY':
       return { ...state, selectedStudyId: action.studyId };
-    case 'IMPORT_RECORDS':
+    case 'SELECT_IMPORT':
       return {
         ...state,
-        irtRecords: action.records,
-        fileName: action.fileName,
-        step: 'review',
-        currentIndex: 0,
-        matches: [],
+        selectedImport: action.importData,
+        activeTab: 'matching',
+        currentSubjectIndex: 0,
       };
-    case 'ADD_MATCH':
+    case 'SET_SUBJECTS':
+      return { ...state, subjects: action.subjects };
+    case 'NEXT_SUBJECT':
       return {
         ...state,
-        matches: [...state.matches, action.match],
-      };
-    case 'REMOVE_MATCH':
-      return {
-        ...state,
-        matches: state.matches.filter((m) => m.irtRecord.id !== action.irtRecordId),
-      };
-    case 'UPDATE_MATCH':
-      return {
-        ...state,
-        matches: state.matches.map((m) =>
-          m.irtRecord.id === action.irtRecordId
-            ? { ...m, referralId: action.referralId }
-            : m
+        currentSubjectIndex: Math.min(
+          state.currentSubjectIndex + 1,
+          state.subjects.length - 1
         ),
       };
-    case 'NEXT_RECORD':
+    case 'PREV_SUBJECT':
       return {
         ...state,
-        currentIndex: Math.min(state.currentIndex + 1, state.irtRecords.length - 1),
+        currentSubjectIndex: Math.max(state.currentSubjectIndex - 1, 0),
       };
-    case 'PREV_RECORD':
+    case 'GO_TO_SUBJECT':
       return {
         ...state,
-        currentIndex: Math.max(state.currentIndex - 1, 0),
+        currentSubjectIndex: Math.max(
+          0,
+          Math.min(action.index, state.subjects.length - 1)
+        ),
       };
-    case 'GO_TO_RECORD':
+    case 'SET_FILTER_CONFIDENCE':
+      return { ...state, filterConfidence: action.confidence };
+    case 'SET_FILTER_STATUS':
+      return { ...state, filterStatus: action.status };
+    case 'ADD_DECISION':
       return {
         ...state,
-        currentIndex: Math.max(0, Math.min(action.index, state.irtRecords.length - 1)),
+        decisions: { ...state.decisions, [action.key]: action.decision },
+        showDecisionPanel: false,
+        selectedMatch: null,
       };
-    case 'COMPLETE_SESSION':
-      return { ...state, step: 'summary' };
+    case 'REMOVE_DECISION': {
+      const { [action.key]: _, ...rest } = state.decisions;
+      return { ...state, decisions: rest };
+    }
+    case 'SHOW_DECISION_PANEL':
+      return { ...state, showDecisionPanel: true, selectedMatch: action.match };
+    case 'HIDE_DECISION_PANEL':
+      return { ...state, showDecisionPanel: false, selectedMatch: null };
     case 'RESET':
       return initialState;
     default:
@@ -93,114 +99,67 @@ function reconciliationReducer(
   }
 }
 
-// Step configuration
-const steps: { id: ReconciliationStep; label: string; icon: React.ReactNode }[] = [
-  { id: 'import', label: 'Import', icon: <FileUp className="w-4 h-4" /> },
-  { id: 'review', label: 'Review', icon: <Search className="w-4 h-4" /> },
-  { id: 'match', label: 'Match', icon: <CheckCircle2 className="w-4 h-4" /> },
-  { id: 'summary', label: 'Summary', icon: <ListChecks className="w-4 h-4" /> },
-];
-
 export default function ReconciliationPage() {
-  const [state, dispatch] = useReducer(reconciliationReducer, initialState);
+  const [state, dispatch] = useReducer(reconReducer, initialState);
 
-  // Get referrals for the selected study
-  const studyReferrals = useMemo(() => {
-    if (!state.selectedStudyId) return [];
-    return getReferralsByStudy(state.selectedStudyId);
-  }, [state.selectedStudyId]);
-
-  // Get current IRT record
-  const currentIRTRecord = useMemo(() => {
-    if (state.irtRecords.length === 0) return null;
-    return state.irtRecords[state.currentIndex];
-  }, [state.irtRecords, state.currentIndex]);
-
-  // Find matches for current IRT record
-  const currentMatches = useMemo((): MatchCandidate[] => {
-    if (!currentIRTRecord || studyReferrals.length === 0) return [];
-    return findMatches(currentIRTRecord, studyReferrals);
-  }, [currentIRTRecord, studyReferrals]);
-
-  // Check if current record has been matched
-  const currentRecordMatch = useMemo(() => {
-    if (!currentIRTRecord) return null;
-    return state.matches.find((m) => m.irtRecord.id === currentIRTRecord.id);
-  }, [currentIRTRecord, state.matches]);
+  // Get current subject
+  const currentSubject = useMemo(() => {
+    const subjects = mockSubjects.filter(
+      (s) => s.matchStatus === 'pending' && s.potentialMatchCount > 0
+    );
+    return subjects[state.currentSubjectIndex] || null;
+  }, [state.currentSubjectIndex]);
 
   // Handlers
-  const handleStudySelect = useCallback((studyId: string) => {
-    dispatch({ type: 'SET_STUDY', studyId });
+  const handleTabChange = useCallback((tab: ReconTab) => {
+    dispatch({ type: 'SET_TAB', tab });
   }, []);
 
-  const handleImport = useCallback((records: IRTRecord[], fileName: string) => {
-    dispatch({ type: 'IMPORT_RECORDS', records, fileName });
+  const handleSelectImport = useCallback((importData: IRTImport) => {
+    dispatch({ type: 'SELECT_IMPORT', importData });
   }, []);
 
-  const handleProceedToMatching = useCallback(() => {
-    dispatch({ type: 'SET_STEP', step: 'match' });
+  const handleShowDecisionPanel = useCallback((match: PotentialMatch) => {
+    dispatch({ type: 'SHOW_DECISION_PANEL', match });
   }, []);
 
-  const handleSelectMatch = useCallback(
-    (referralId: string | null, referral?: Referral) => {
-      if (!currentIRTRecord) return;
+  const handleCloseDecisionPanel = useCallback(() => {
+    dispatch({ type: 'HIDE_DECISION_PANEL' });
+  }, []);
 
-      const match: ReconciliationMatch = {
-        id: `match-${Date.now()}`,
-        irtRecord: currentIRTRecord,
-        referralId,
-        referral,
-        matchedAt: new Date().toISOString(),
-        confidenceScore: referralId
-          ? currentMatches.find((m) => m.referralId === referralId)?.confidenceScore || 0
-          : 0,
-        isManual: true,
-      };
+  const handleDecisionSubmit = useCallback(
+    (decision: MatchDecision) => {
+      if (!currentSubject || !state.selectedMatch) return;
+      const key = `${currentSubject.id}-${state.selectedMatch.id}`;
+      dispatch({ type: 'ADD_DECISION', key, decision });
 
-      dispatch({ type: 'ADD_MATCH', match });
-
-      // Auto-advance to next record
-      if (state.currentIndex < state.irtRecords.length - 1) {
-        dispatch({ type: 'NEXT_RECORD' });
-      }
+      // Auto-advance to next subject
+      setTimeout(() => {
+        dispatch({ type: 'NEXT_SUBJECT' });
+      }, 300);
     },
-    [currentIRTRecord, currentMatches, state.currentIndex, state.irtRecords.length]
+    [currentSubject, state.selectedMatch]
   );
 
-  const handleNoMatch = useCallback(() => {
-    handleSelectMatch(null);
-  }, [handleSelectMatch]);
+  const handleReject = useCallback(
+    (subjectId: string, match: PotentialMatch) => {
+      const key = `${subjectId}-${match.id}`;
+      dispatch({
+        type: 'ADD_DECISION',
+        key,
+        decision: { decision: 'rejected', match },
+      });
+    },
+    []
+  );
 
-  const handlePrevRecord = useCallback(() => {
-    dispatch({ type: 'PREV_RECORD' });
+  const handleRemoveDecision = useCallback((key: string) => {
+    dispatch({ type: 'REMOVE_DECISION', key });
   }, []);
 
-  const handleNextRecord = useCallback(() => {
-    dispatch({ type: 'NEXT_RECORD' });
+  const handleBackToImports = useCallback(() => {
+    dispatch({ type: 'SET_TAB', tab: 'imports' });
   }, []);
-
-  const handleGoToRecord = useCallback((index: number) => {
-    dispatch({ type: 'GO_TO_RECORD', index });
-  }, []);
-
-  const handleComplete = useCallback(() => {
-    dispatch({ type: 'COMPLETE_SESSION' });
-  }, []);
-
-  const handleRemoveMatch = useCallback((irtRecordId: string) => {
-    dispatch({ type: 'REMOVE_MATCH', irtRecordId });
-  }, []);
-
-  const handleReset = useCallback(() => {
-    dispatch({ type: 'RESET' });
-  }, []);
-
-  const handleBackToMatching = useCallback(() => {
-    dispatch({ type: 'SET_STEP', step: 'match' });
-  }, []);
-
-  // Get step index
-  const currentStepIndex = steps.findIndex((s) => s.id === state.step);
 
   return (
     <div className="space-y-6">
@@ -222,138 +181,92 @@ export default function ReconciliationPage() {
         </div>
       </motion.div>
 
-      {/* Step Indicator */}
+      {/* Tab Bar */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.05 }}
+        className="flex justify-center"
       >
-        <div className="flex items-center justify-center gap-2">
-          {steps.map((step, index) => {
-            const isActive = state.step === step.id;
-            const isPast = index < currentStepIndex;
-            const isFuture = index > currentStepIndex;
-
-            return (
-              <div key={step.id} className="flex items-center">
-                {/* Step circle */}
-                <div
-                  className={`
-                    flex items-center gap-2 px-4 py-2 rounded-2xl transition-all duration-300
-                    ${
-                      isActive
-                        ? 'bg-mint/20 text-mint border border-mint/30'
-                        : isPast
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                          : 'bg-white/40 dark:bg-white/5 text-text-muted'
-                    }
-                  `}
-                >
-                  {step.icon}
-                  <span className="text-sm font-medium">{step.label}</span>
-                </div>
-
-                {/* Connector line */}
-                {index < steps.length - 1 && (
-                  <div
-                    className={`
-                      w-8 h-0.5 mx-2 transition-colors duration-300
-                      ${isPast ? 'bg-emerald-500/40' : 'bg-white/20 dark:bg-white/10'}
-                    `}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <ReconTabBar
+          activeTab={state.activeTab}
+          onTabChange={handleTabChange}
+          pendingApprovalsCount={mockPendingApprovals.length}
+        />
       </motion.div>
 
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-      >
-        <GlassCard variant="elevated" padding="lg">
-          <AnimatePresence mode="wait">
-            {state.step === 'import' && (
-              <motion.div
-                key="import"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <IRTUpload
-                  selectedStudyId={state.selectedStudyId}
-                  onStudySelect={handleStudySelect}
-                  onImport={handleImport}
-                />
-              </motion.div>
-            )}
+      {/* Content */}
+      <AnimatePresence mode="wait">
+        {state.activeTab === 'dashboard' && (
+          <motion.div
+            key="dashboard"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ReconDashboard
+              onTabChange={handleTabChange}
+              onSelectImport={handleSelectImport}
+            />
+          </motion.div>
+        )}
 
-            {state.step === 'review' && (
-              <motion.div
-                key="review"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <IRTRecordReview
-                  records={state.irtRecords}
-                  fileName={state.fileName || ''}
-                  onProceed={handleProceedToMatching}
-                  onBack={() => dispatch({ type: 'SET_STEP', step: 'import' })}
-                  onReset={handleReset}
-                />
-              </motion.div>
-            )}
+        {state.activeTab === 'imports' && (
+          <motion.div
+            key="imports"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ReconImportsList
+              selectedStudyId={state.selectedStudyId || undefined}
+              onSelectImport={handleSelectImport}
+            />
+          </motion.div>
+        )}
 
-            {state.step === 'match' && (
-              <motion.div
-                key="match"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <MatchingWizard
-                  irtRecords={state.irtRecords}
-                  currentIndex={state.currentIndex}
-                  matches={state.matches}
-                  matchCandidates={currentMatches}
-                  onSelectMatch={handleSelectMatch}
-                  onNoMatch={handleNoMatch}
-                  onPrev={handlePrevRecord}
-                  onNext={handleNextRecord}
-                  onGoToRecord={handleGoToRecord}
-                  onComplete={handleComplete}
-                  onReset={handleReset}
-                />
-              </motion.div>
-            )}
+        {state.activeTab === 'matching' && (
+          <motion.div
+            key="matching"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ReconSubjectMatcher
+              selectedImport={state.selectedImport}
+              onBack={handleBackToImports}
+              onShowDecisionPanel={handleShowDecisionPanel}
+              decisions={state.decisions}
+              onReject={handleReject}
+              onRemoveDecision={handleRemoveDecision}
+            />
+          </motion.div>
+        )}
 
-            {state.step === 'summary' && (
-              <motion.div
-                key="summary"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ReconTotalList
-                  matches={state.matches}
-                  totalIRTRecords={state.irtRecords.length}
-                  onRemoveMatch={handleRemoveMatch}
-                  onBackToMatching={handleBackToMatching}
-                  onReset={handleReset}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </GlassCard>
-      </motion.div>
+        {state.activeTab === 'approvals' && (
+          <motion.div
+            key="approvals"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ReconApprovalQueue />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Decision Panel */}
+      <ReconDecisionPanel
+        isOpen={state.showDecisionPanel}
+        match={state.selectedMatch}
+        subject={currentSubject}
+        onClose={handleCloseDecisionPanel}
+        onSubmit={handleDecisionSubmit}
+      />
     </div>
   );
 }

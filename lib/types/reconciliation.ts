@@ -110,3 +110,200 @@ export interface ReconciliationSummary {
   skipped: number;
   averageConfidence: number;
 }
+
+// ========================================
+// Extended Reconciliation Types (v2)
+// ========================================
+
+/**
+ * Tab identifiers for the reconciliation page
+ */
+export type ReconTab = 'dashboard' | 'imports' | 'matching' | 'approvals';
+
+/**
+ * Status options for IRT imports
+ */
+export type IRTImportStatus =
+  | 'uploaded'
+  | 'processing'
+  | 'pending_review'
+  | 'in_review'
+  | 'pending_approval'
+  | 'completed';
+
+/**
+ * Represents an IRT file import session
+ */
+export interface IRTImport {
+  id: string;
+  studyId: string;
+  studyName: string;
+  fileName: string;
+  importDate: string;           // ISO date
+  status: IRTImportStatus;
+  totalSubjects: number;
+  reviewedSubjects: number;
+  newSubjects: number;
+  pendingMatches: number;
+  pendingApprovals?: number;
+  importedBy: string;
+}
+
+/**
+ * Match status for IRT subjects
+ */
+export type IRTSubjectMatchStatus = 'pending' | 'confirmed' | 'rejected' | 'unmatched';
+
+/**
+ * Subject enrollment status
+ */
+export type IRTSubjectStatus =
+  | 'Pre-Enrolled'
+  | 'Enrolled'
+  | 'Randomized'
+  | 'Screen Failed'
+  | 'Withdrawn';
+
+/**
+ * IRT Subject within an import
+ */
+export interface IRTSubject {
+  id: string;
+  subjectId: string;            // e.g., "3525-006"
+  status: IRTSubjectStatus;
+  siteName: string;
+  siteNumber: string;
+  icfDate: string | null;       // ISO date
+  age: number | null;
+  initials: string;
+  gender?: 'Male' | 'Female' | 'Other';
+  matchStatus: IRTSubjectMatchStatus;
+  potentialMatchCount: number;
+}
+
+/**
+ * Confidence level for potential matches
+ */
+export type MatchConfidence = 'highly' | 'maybe' | 'low';
+
+/**
+ * Criteria that can be matched
+ */
+export interface MatchedCriteria {
+  site: boolean;
+  age: boolean;
+  icfDate: boolean;
+  apptToIcf?: boolean;
+  screenfailDate?: boolean;
+}
+
+/**
+ * Reference to another subject this lead might match
+ */
+export interface OtherSubjectMatch {
+  subjectId: string;
+  confidence: MatchConfidence;
+}
+
+/**
+ * Potential match between IRT subject and a lead/referral
+ */
+export interface PotentialMatch {
+  id: string;
+  leadId: string;
+  firstName: string;
+  lastName: string;
+  initials: string;
+  email?: string;
+  status: string;               // Lead status
+  siteName: string;
+  icfDate: string | null;       // ISO date
+  apptDate?: string | null;     // ISO date
+  enrollDate?: string | null;   // ISO date
+  screenfailDate?: string | null;
+  birthYear: number | null;
+  age: number | null;
+  matchType: string;            // Description of what matched
+  confidence: MatchConfidence;
+  matchScore: number;           // 0-100
+  matchedCriteria: MatchedCriteria;
+  otherSubjectMatches: OtherSubjectMatch[];
+  notes?: string;
+  contactCount?: number;
+  submittedOn?: string;         // ISO date
+}
+
+/**
+ * Reconciliation status for confirmed matches
+ */
+export type ReconStatusType = 'ICF' | 'ICF - SF' | 'Enrolled' | 'TBD';
+
+/**
+ * Status option with description
+ */
+export interface ReconStatusOption {
+  value: ReconStatusType;
+  label: string;
+  description: string;
+}
+
+/**
+ * Decision made during subject matching
+ */
+export interface MatchDecision {
+  decision: 'confirmed' | 'rejected' | 'needs_review';
+  reconStatus?: ReconStatusType;
+  invoiceDate?: string;
+  notes?: string;
+  match?: PotentialMatch;
+}
+
+/**
+ * Pending approval record
+ */
+export interface PendingApproval {
+  id: string;
+  studyName: string;
+  subjectId: string;
+  leadName: string;
+  reconStatus: ReconStatusType;
+  decidedBy: string;
+  decidedAt: string;            // ISO datetime
+  invoiceDate: string | null;
+  notes?: string;
+}
+
+/**
+ * Extended state for the reconciliation page (v2)
+ */
+export interface ReconPageState {
+  activeTab: ReconTab;
+  selectedStudyId: string | null;
+  selectedImport: IRTImport | null;
+  subjects: IRTSubject[];
+  currentSubjectIndex: number;
+  decisions: Record<string, MatchDecision>;   // Key: `${subjectId}-${matchId}`
+  filterConfidence: MatchConfidence | 'all';
+  filterStatus: IRTSubjectMatchStatus | 'all';
+  showDecisionPanel: boolean;
+  selectedMatch: PotentialMatch | null;
+}
+
+/**
+ * Actions for reconciliation state reducer (v2)
+ */
+export type ReconPageAction =
+  | { type: 'SET_TAB'; tab: ReconTab }
+  | { type: 'SET_STUDY'; studyId: string }
+  | { type: 'SELECT_IMPORT'; importData: IRTImport }
+  | { type: 'SET_SUBJECTS'; subjects: IRTSubject[] }
+  | { type: 'NEXT_SUBJECT' }
+  | { type: 'PREV_SUBJECT' }
+  | { type: 'GO_TO_SUBJECT'; index: number }
+  | { type: 'SET_FILTER_CONFIDENCE'; confidence: MatchConfidence | 'all' }
+  | { type: 'SET_FILTER_STATUS'; status: IRTSubjectMatchStatus | 'all' }
+  | { type: 'ADD_DECISION'; key: string; decision: MatchDecision }
+  | { type: 'REMOVE_DECISION'; key: string }
+  | { type: 'SHOW_DECISION_PANEL'; match: PotentialMatch }
+  | { type: 'HIDE_DECISION_PANEL' }
+  | { type: 'RESET' };
